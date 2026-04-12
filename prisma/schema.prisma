@@ -1,0 +1,15 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
+}
+
+model AppStateSync {
+  id        String   @id @default("default")
+  state     Json
+  updatedAt DateTime @updatedAt
+}
