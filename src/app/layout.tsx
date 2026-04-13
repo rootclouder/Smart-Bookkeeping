@@ -6,8 +6,8 @@ import { ClientLayout } from './ClientLayout';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'codespan',
-  description: '个人财务中心 - 资产、理财、收支管理',
+  title: '智慧财务管理',
+  description: '智慧财务管理 - 资产、理财、收支管理',
 };
 
 export default function RootLayout({

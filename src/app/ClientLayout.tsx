@@ -34,7 +34,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
           <div className="w-8 h-8 rounded-lg bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 flex items-center justify-center mr-3">
             ¥
           </div>
-          个人财务中心
+          智慧财务管理
         </div>
         <nav className="flex-1 py-4 px-3 space-y-1">
           {navItems.map((item) => {
@@ -62,7 +62,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
       {/* Main Content */}
       <main className="flex-1 overflow-auto relative">
         <div className="md:hidden h-16 border-b border-zinc-200 dark:border-zinc-800 flex items-center px-4 bg-white dark:bg-zinc-900 font-semibold">
-          个人财务中心
+          智慧财务管理
         </div>
         <div className="p-6 md:p-8 max-w-6xl mx-auto pb-24 md:pb-8">
           {children}
