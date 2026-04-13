@@ -6,7 +6,7 @@ import { ClientLayout } from './ClientLayout';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: '个人财务中心',
+  title: 'codespan',
   description: '个人财务中心 - 资产、理财、收支管理',
 };
 
