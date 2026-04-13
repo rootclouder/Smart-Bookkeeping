@@ -233,19 +233,19 @@ export default function Home() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Monthly Summary */}
         <div className="lg:col-span-1 space-y-6">
-          <div className="bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 p-6 rounded-3xl shadow-xl">
-            <h3 className="font-medium mb-6 opacity-80">本月概况</h3>
+          <div className="bg-zinc-900 text-white p-6 rounded-3xl shadow-xl">
+            <h3 className="font-medium mb-6 text-white">本月概况</h3>
             <div className="space-y-4">
               <div>
-                <div className="text-sm opacity-80 mb-1">总收入</div>
-                <div className="text-2xl font-bold text-emerald-400 dark:text-emerald-600">
+                <div className="text-sm opacity-80 mb-1 text-white">总收入</div>
+                <div className="text-2xl font-bold text-emerald-400">
                   +¥{monthIncome.toFixed(2)}
                 </div>
               </div>
-              <div className="h-px bg-white/20 dark:bg-black/10" />
+              <div className="h-px bg-white/20" />
               <div>
-                <div className="text-sm opacity-80 mb-1">总支出</div>
-                <div className="text-2xl font-bold text-rose-400 dark:text-rose-600">
+                <div className="text-sm opacity-80 mb-1 text-white">总支出</div>
+                <div className="text-2xl font-bold text-rose-400">
                   -¥{monthExpense.toFixed(2)}
                 </div>
               </div>
