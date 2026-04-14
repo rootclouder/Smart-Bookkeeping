@@ -114,7 +114,7 @@ export function WelcomePage() {
           
           <motion.h1 
             variants={itemVariants}
-            className="text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6 leading-[1.1]"
+            className="text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6 leading-[1.1] text-white"
           >
             智慧财务管理<br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-indigo-400">
