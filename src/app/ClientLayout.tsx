@@ -65,7 +65,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
       <aside className="w-64 border-r border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hidden md:flex flex-col">
         <div className="h-16 flex items-center px-6 font-semibold text-lg tracking-tight">
           <img src="/icon.svg" alt="Logo" className="w-8 h-8 rounded-lg mr-3 shadow-sm" />
-          个人财务可视化中心
+          智慧财务中心
         </div>
         <nav className="flex-1 py-4 px-3 space-y-1">
           {navItems.map((item) => {
@@ -150,7 +150,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
         <div className="md:hidden h-16 border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between px-4 bg-white dark:bg-zinc-900 font-semibold">
           <div className="flex items-center">
             <img src="/icon.svg" alt="Logo" className="w-8 h-8 rounded-lg mr-3 shadow-sm" />
-            个人财务可视化中心
+            智慧财务中心
           </div>
           <div className="flex items-center space-x-3">
             {mounted && (

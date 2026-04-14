@@ -8,8 +8,8 @@ import { ThemeProvider } from '@/components/ThemeProvider';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: '个人财务可视化中心',
-  description: '个人财务可视化中心 - 资产、理财、收支管理',
+  title: '智慧财务中心',
+  description: '智慧财务中心 - 资产、理财、收支管理',
 };
 
 export default function RootLayout({

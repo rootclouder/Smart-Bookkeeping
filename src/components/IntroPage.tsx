@@ -134,7 +134,7 @@ export function IntroPage() {
         <motion.div variants={itemVariants} className={`inline-flex items-center space-x-2 border rounded-full px-4 py-1.5 mb-8 backdrop-blur-md ${theme === 'dark' ? 'bg-white/5 border-white/10' : 'bg-black/5 border-black/10'}`}>
           <span className="flex h-2 w-2 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.8)]"></span>
           <span className={`text-xs font-medium tracking-wide ${theme === 'dark' ? 'text-zinc-300' : 'text-slate-600'}`}>
-            个人财务可视化中心
+            新一代智慧财务中心
           </span>
         </motion.div>
         
@@ -142,7 +142,7 @@ export function IntroPage() {
           variants={itemVariants}
           className="text-5xl sm:text-6xl md:text-7xl font-extrabold tracking-tight mb-6 leading-tight"
         >
-          清晰掌控<br />
+          智慧财务中心<br />
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 via-teal-400 to-indigo-500">
             每一分财富流向
           </span>
