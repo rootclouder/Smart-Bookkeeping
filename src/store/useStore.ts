@@ -5,26 +5,42 @@ import { fetchInitialData, syncStateToDb } from '@/actions/finance';
 const postgresStorage: StateStorage = {
   getItem: async (name: string): Promise<string | null> => {
     try {
-      const data = await fetchInitialData();
-      if (data) {
-        return JSON.stringify({ state: data, version: 1 });
+      const response = await fetchInitialData();
+      if (response.isLoggedIn) {
+        const { state, userId } = response;
+        if (state) {
+          const stringified = JSON.stringify({ state, version: 1 });
+          localStorage.setItem(`${name}-user-${userId}`, stringified);
+          return stringified;
+        }
+        // Fallback to local user cache if DB state is empty
+        return localStorage.getItem(`${name}-user-${userId}`);
+      } else {
+        // Guest mode
+        return localStorage.getItem(`${name}-guest`);
       }
     } catch (e) {
-      console.warn("Failed to fetch from DB, falling back to local");
+      console.warn("Failed to fetch initial data, falling back to guest local");
+      return localStorage.getItem(`${name}-guest`);
     }
-    return localStorage.getItem(name);
   },
   setItem: async (name: string, value: string): Promise<void> => {
-    localStorage.setItem(name, value);
     try {
       const parsed = JSON.parse(value);
-      await syncStateToDb(parsed.state);
+      const response = await syncStateToDb(parsed.state);
+      
+      if (response.isLoggedIn) {
+        localStorage.setItem(`${name}-user-${response.userId}`, value);
+      } else {
+        localStorage.setItem(`${name}-guest`, value);
+      }
     } catch (e) {
-      console.warn("Failed to sync to DB", e);
+      console.warn("Failed to sync to DB, saving to guest as fallback", e);
+      localStorage.setItem(`${name}-guest`, value);
     }
   },
   removeItem: async (name: string): Promise<void> => {
-    localStorage.removeItem(name);
+    // Optionally implement clear logic
   },
 };
 

@@ -3,18 +3,25 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, Wallet, Box, CreditCard, Plus, TrendingUp, BarChart3, Tag } from 'lucide-react';
+import { useSession, signOut } from 'next-auth/react';
+import { LayoutDashboard, Wallet, Box, CreditCard, Plus, TrendingUp, BarChart3, Tag, User as UserIcon, LogOut } from 'lucide-react';
 import { RecordModal } from '@/components/RecordModal';
+import { LoginModal } from '@/components/LoginModal';
 import { cn } from '@/lib/utils';
 import { useStore } from '@/store/useStore';
 
 export function ClientLayout({ children }: { children: React.ReactNode }) {
   const [isRecordModalOpen, setIsRecordModalOpen] = useState(false);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const pathname = usePathname();
+  const { data: session, status } = useSession();
 
   useEffect(() => {
-    useStore.persist.rehydrate();
-  }, []);
+    // Rehydrate state after auth resolves to prevent mismatch
+    if (status !== 'loading') {
+      useStore.persist.rehydrate();
+    }
+  }, [status]);
 
   const navItems = [
     { to: '/', icon: LayoutDashboard, label: '总览' },
@@ -57,12 +64,70 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
             </Link>
           )})}
         </nav>
+        
+        {/* User Auth Section (Sidebar) */}
+        <div className="p-4 border-t border-zinc-200 dark:border-zinc-800">
+          {status === 'loading' ? (
+            <div className="animate-pulse h-10 bg-zinc-100 dark:bg-zinc-800 rounded-xl"></div>
+          ) : session?.user ? (
+            <div className="flex items-center justify-between p-2 rounded-xl bg-zinc-50 dark:bg-zinc-800/50">
+              <div className="flex items-center overflow-hidden">
+                {session.user.image ? (
+                  <img src={session.user.image} alt="Avatar" className="w-8 h-8 rounded-full bg-zinc-200 shrink-0" />
+                ) : (
+                  <div className="w-8 h-8 rounded-full bg-zinc-200 dark:bg-zinc-700 flex items-center justify-center shrink-0">
+                    <UserIcon className="w-4 h-4 text-zinc-500" />
+                  </div>
+                )}
+                <span className="ml-3 text-sm font-medium truncate pr-2">
+                  {session.user.name || 'User'}
+                </span>
+              </div>
+              <button 
+                onClick={() => signOut({ callbackUrl: '/' })}
+                className="p-2 text-zinc-400 hover:text-rose-500 transition-colors shrink-0"
+                title="退出登录"
+              >
+                <LogOut className="w-4 h-4" />
+              </button>
+            </div>
+          ) : (
+            <button
+              onClick={() => setIsLoginModalOpen(true)}
+              className="w-full flex items-center justify-center px-4 py-2.5 bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 rounded-xl font-medium text-sm transition-transform active:scale-[0.98]"
+            >
+              登录 / 游客
+            </button>
+          )}
+        </div>
       </aside>
 
       {/* Main Content */}
       <main className="flex-1 overflow-auto relative">
-        <div className="md:hidden h-16 border-b border-zinc-200 dark:border-zinc-800 flex items-center px-4 bg-white dark:bg-zinc-900 font-semibold">
+        <div className="md:hidden h-16 border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between px-4 bg-white dark:bg-zinc-900 font-semibold">
           智慧财务管理
+          <div className="flex items-center">
+            {status === 'loading' ? (
+              <div className="w-8 h-8 rounded-full bg-zinc-200 animate-pulse"></div>
+            ) : session?.user ? (
+              <button onClick={() => signOut({ callbackUrl: '/' })}>
+                {session.user.image ? (
+                  <img src={session.user.image} alt="Avatar" className="w-8 h-8 rounded-full" />
+                ) : (
+                  <div className="w-8 h-8 rounded-full bg-zinc-200 dark:bg-zinc-700 flex items-center justify-center">
+                    <UserIcon className="w-4 h-4 text-zinc-500" />
+                  </div>
+                )}
+              </button>
+            ) : (
+              <button 
+                onClick={() => setIsLoginModalOpen(true)}
+                className="text-xs px-3 py-1.5 bg-zinc-100 dark:bg-zinc-800 rounded-lg"
+              >
+                登录
+              </button>
+            )}
+          </div>
         </div>
         <div className="p-6 md:p-8 max-w-6xl mx-auto pb-24 md:pb-8">
           {children}
@@ -105,6 +170,12 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
       <RecordModal
         isOpen={isRecordModalOpen}
         onClose={() => setIsRecordModalOpen(false)}
+      />
+
+      {/* Login Modal */}
+      <LoginModal
+        isOpen={isLoginModalOpen}
+        onClose={() => setIsLoginModalOpen(false)}
       />
     </div>
   );
