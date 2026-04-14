@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "next dev",
-    "build": "prisma db push && prisma generate && next build",
+    "build": "if [ \"$SKIP_DB_PUSH\" != \"1\" ] && [ -n \"$POSTGRES_PRISMA_URL\" ]; then prisma db push; else echo \"Skipping prisma db push\"; fi && prisma generate && next build",
     "start": "next start",
     "lint": "next lint"
   },
