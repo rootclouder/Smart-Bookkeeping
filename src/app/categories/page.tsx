@@ -107,7 +107,7 @@ export default function Categories() {
                 className={cn(
                   "px-6 py-2.5 text-sm font-bold rounded-lg transition-all",
                   activeTab === tab 
-                    ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white shadow-sm" 
+                    ? "bg-white/80 dark:bg-zinc-800/80 backdrop-blur-md text-zinc-900 dark:text-white shadow-sm border border-white/20 dark:border-white/10" 
                     : "text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
                 )}
               >
@@ -125,7 +125,7 @@ export default function Categories() {
         </div>
       </header>
 
-      <div className="bg-white dark:bg-zinc-900 rounded-3xl shadow-sm border border-zinc-100 dark:border-zinc-800 overflow-hidden">
+      <div className="bg-white/60 dark:bg-zinc-900/60 backdrop-blur-xl border-white/20 dark:border-white/10 rounded-3xl shadow-sm border overflow-hidden">
         {topLevelCategories.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-20 text-zinc-500">
             <div className="w-16 h-16 rounded-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center mb-4">
@@ -258,7 +258,7 @@ export default function Categories() {
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
               onSubmit={handleSubmit}
-              className="bg-white dark:bg-zinc-900 p-6 md:p-8 rounded-3xl shadow-2xl border border-zinc-100 dark:border-zinc-800 w-full max-w-md relative z-10"
+              className="bg-white/70 dark:bg-zinc-900/70 backdrop-blur-2xl border-white/30 dark:border-white/10 p-6 md:p-8 rounded-3xl shadow-2xl border w-full max-w-md relative z-10"
             >
               <button 
                 type="button"

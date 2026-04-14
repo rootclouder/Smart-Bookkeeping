@@ -77,7 +77,7 @@ export function RecordModal({ isOpen, onClose }: RecordModalProps) {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className="relative w-full max-w-md bg-white dark:bg-zinc-900 rounded-3xl shadow-2xl border border-zinc-200 dark:border-zinc-800 overflow-hidden flex flex-col max-h-[90vh] p-6 md:p-8"
+            className="relative w-full max-w-md bg-white/70 dark:bg-zinc-900/70 backdrop-blur-2xl border-white/30 dark:border-white/10 rounded-3xl shadow-2xl border overflow-hidden flex flex-col max-h-[90vh] p-6 md:p-8"
           >
             <button
               type="button"

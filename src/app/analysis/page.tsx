@@ -148,7 +148,7 @@ export default function Analysis() {
               className={cn(
                 "px-4 py-2 text-sm font-bold rounded-lg transition-all whitespace-nowrap",
                 dateRange === range 
-                  ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white shadow-sm" 
+                  ? "bg-white/80 dark:bg-zinc-800/80 backdrop-blur-md text-zinc-900 dark:text-white shadow-sm border border-white/20 dark:border-white/10" 
                   : "text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
               )}
             >
@@ -160,7 +160,7 @@ export default function Analysis() {
 
       {/* Analysis Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-white dark:bg-zinc-900 rounded-3xl shadow-sm border border-zinc-100 dark:border-zinc-800 p-6 flex flex-col h-[400px]">
+        <div className="bg-white/60 dark:bg-zinc-900/60 backdrop-blur-xl border-white/20 dark:border-white/10 rounded-3xl shadow-sm border p-6 flex flex-col h-[400px]">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-xl font-bold">分类构成</h2>
             <div className="flex bg-zinc-100 dark:bg-zinc-800/50 p-1 rounded-xl">
@@ -171,7 +171,7 @@ export default function Analysis() {
                   className={cn(
                     "px-3 py-1.5 text-xs font-bold rounded-lg transition-all",
                     analysisType === type 
-                      ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white shadow-sm" 
+                      ? "bg-white/80 dark:bg-zinc-800/80 backdrop-blur-md text-zinc-900 dark:text-white shadow-sm border border-white/20 dark:border-white/10" 
                       : "text-zinc-500"
                   )}
                 >
@@ -224,7 +224,7 @@ export default function Analysis() {
           </div>
         </div>
 
-        <div className="bg-white dark:bg-zinc-900 rounded-3xl shadow-sm border border-zinc-100 dark:border-zinc-800 p-6 flex flex-col h-[400px]">
+        <div className="bg-white/60 dark:bg-zinc-900/60 backdrop-blur-xl border-white/20 dark:border-white/10 rounded-3xl shadow-sm border p-6 flex flex-col h-[400px]">
           <div className="mb-6">
             <h2 className="text-xl font-bold">收支趋势 (近6个月)</h2>
           </div>
@@ -284,7 +284,7 @@ export default function Analysis() {
                   className={cn(
                     "px-4 py-2 text-sm font-bold rounded-lg transition-all whitespace-nowrap",
                     activeTab === tab 
-                      ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white shadow-sm" 
+                      ? "bg-white/80 dark:bg-zinc-800/80 backdrop-blur-md text-zinc-900 dark:text-white shadow-sm border border-white/20 dark:border-white/10" 
                       : "text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
                   )}
                 >
@@ -298,7 +298,7 @@ export default function Analysis() {
                 "p-2.5 rounded-xl border transition-colors flex-shrink-0",
                 isFilterOpen || filterDate || filterKeyword || filterAccount !== 'all'
                   ? "bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 border-zinc-900 dark:border-white"
-                  : "bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800"
+                  : "bg-white/70 dark:bg-zinc-800/70 backdrop-blur-md border-white/20 dark:border-white/10 text-zinc-600 dark:text-zinc-400 hover:bg-white dark:hover:bg-zinc-800 shadow-sm"
               )}
               title="筛选"
             >
@@ -307,7 +307,7 @@ export default function Analysis() {
             {sortedMonths.length > 0 && (
               <button 
                 onClick={toggleAll}
-                className="p-2.5 rounded-xl border bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors flex-shrink-0"
+                className="p-2.5 rounded-xl border bg-white/70 dark:bg-zinc-800/70 backdrop-blur-md border-white/20 dark:border-white/10 text-zinc-600 dark:text-zinc-400 hover:bg-white dark:hover:bg-zinc-800 transition-colors flex-shrink-0 shadow-sm"
                 title={isAllCollapsed ? "全部展开" : "全部收起"}
               >
                 {isAllCollapsed ? <Maximize2 className="w-5 h-5" /> : <Minimize2 className="w-5 h-5" />}
@@ -331,7 +331,7 @@ export default function Analysis() {
                     type="date"
                     value={filterDate}
                     onChange={(e) => setFilterDate(e.target.value)}
-                    className="w-full px-3 py-2.5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-xl text-sm focus:ring-2 focus:ring-zinc-900 outline-none transition-all"
+                    className="w-full px-3 py-2.5 bg-white/50 dark:bg-zinc-800/50 backdrop-blur-md border border-zinc-200 dark:border-zinc-700 rounded-xl text-sm focus:ring-2 focus:ring-zinc-900 outline-none transition-all"
                   />
                 </div>
                 <div>
@@ -339,7 +339,7 @@ export default function Analysis() {
                   <select
                     value={filterAccount}
                     onChange={(e) => setFilterAccount(e.target.value)}
-                    className="w-full px-3 py-2.5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-xl text-sm focus:ring-2 focus:ring-zinc-900 outline-none transition-all"
+                    className="w-full px-3 py-2.5 bg-white/50 dark:bg-zinc-800/50 backdrop-blur-md border border-zinc-200 dark:border-zinc-700 rounded-xl text-sm focus:ring-2 focus:ring-zinc-900 outline-none transition-all"
                   >
                     <option value="all">所有账户</option>
                     {accounts.map(acc => (
@@ -355,7 +355,7 @@ export default function Analysis() {
                       value={filterKeyword}
                       onChange={(e) => setFilterKeyword(e.target.value)}
                       placeholder="搜索分类、备注..."
-                      className="w-full px-3 py-2.5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-xl text-sm focus:ring-2 focus:ring-zinc-900 outline-none transition-all pr-8"
+                      className="w-full px-3 py-2.5 bg-white/50 dark:bg-zinc-800/50 backdrop-blur-md border border-zinc-200 dark:border-zinc-700 rounded-xl text-sm focus:ring-2 focus:ring-zinc-900 outline-none transition-all pr-8"
                     />
                     {filterKeyword && (
                       <button 
@@ -435,7 +435,7 @@ export default function Analysis() {
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, scale: 0.95 }}
                             transition={{ delay: Math.min(idx * 0.05, 0.5) }}
-                            className="bg-white dark:bg-zinc-900 p-4 md:p-5 rounded-2xl shadow-sm border border-zinc-100 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-600 transition-colors relative group"
+                            className="bg-white/60 dark:bg-zinc-900/60 backdrop-blur-xl border-white/20 dark:border-white/10 p-4 md:p-5 rounded-2xl shadow-sm border hover:border-zinc-300 dark:hover:border-zinc-600 transition-colors relative group"
                           >
                             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                               <div className="flex items-start md:items-center space-x-4">

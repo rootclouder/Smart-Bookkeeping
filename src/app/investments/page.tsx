@@ -233,7 +233,7 @@ export default function Investments() {
               className={cn(
                 "flex items-center px-5 py-2.5 rounded-xl text-sm font-bold transition-all",
                 isActive 
-                  ? "bg-white dark:bg-zinc-700 text-zinc-900 dark:text-white shadow-sm" 
+                  ? "bg-white/80 dark:bg-zinc-800/80 backdrop-blur-md border border-white/20 dark:border-white/10 text-zinc-900 dark:text-white shadow-sm" 
                   : "text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
               )}
             >
@@ -246,14 +246,14 @@ export default function Investments() {
 
       {/* Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="p-6 bg-white dark:bg-zinc-900 rounded-3xl border border-zinc-100 dark:border-zinc-800 shadow-sm relative overflow-hidden">
+        <div className="p-6 bg-white/60 dark:bg-zinc-900/60 backdrop-blur-xl rounded-3xl border border-white/20 dark:border-white/10 shadow-sm relative overflow-hidden">
           <div className="text-sm font-medium text-zinc-500 mb-1">总持有金额</div>
           <div className="text-3xl font-bold font-mono tracking-tight text-zinc-900 dark:text-zinc-100">
             ¥{totalAmount.toFixed(2)}
           </div>
         </div>
         
-        <div className="p-6 bg-white dark:bg-zinc-900 rounded-3xl border border-zinc-100 dark:border-zinc-800 shadow-sm relative overflow-hidden">
+        <div className="p-6 bg-white/60 dark:bg-zinc-900/60 backdrop-blur-xl rounded-3xl border border-white/20 dark:border-white/10 shadow-sm relative overflow-hidden">
           <div className="text-sm font-medium text-zinc-500 mb-1">累计收益</div>
           <div className={cn(
             "text-3xl font-bold font-mono tracking-tight flex items-center",
@@ -264,7 +264,7 @@ export default function Investments() {
           </div>
         </div>
 
-        <div className="p-6 bg-white dark:bg-zinc-900 rounded-3xl border border-zinc-100 dark:border-zinc-800 shadow-sm relative overflow-hidden">
+        <div className="p-6 bg-white/60 dark:bg-zinc-900/60 backdrop-blur-xl rounded-3xl border border-white/20 dark:border-white/10 shadow-sm relative overflow-hidden">
           <div className="text-sm font-medium text-zinc-500 mb-1">累计收益率</div>
           <div className={cn(
             "text-3xl font-bold font-mono tracking-tight",
@@ -300,7 +300,7 @@ export default function Investments() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95 }}
-                className="bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 rounded-3xl p-6 shadow-sm hover:shadow-md transition-shadow"
+                className="bg-white/60 dark:bg-zinc-900/60 backdrop-blur-xl border border-white/20 dark:border-white/10 rounded-3xl p-6 shadow-sm hover:shadow-md transition-shadow"
               >
                 <div className="flex justify-between items-start mb-6">
                   <div>
@@ -388,7 +388,7 @@ export default function Investments() {
             <motion.form
               initial={{ opacity: 0, scale: 0.95, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.95, y: 20 }}
               onSubmit={handleAddOrUpdate}
-              className="bg-white dark:bg-zinc-900 p-6 md:p-8 rounded-3xl shadow-2xl border border-zinc-100 dark:border-zinc-800 w-full max-w-md relative z-10"
+              className="bg-white/70 dark:bg-zinc-900/70 backdrop-blur-2xl border-white/30 dark:border-white/10 p-6 md:p-8 rounded-3xl shadow-2xl border w-full max-w-md relative z-10"
             >
               <button type="button" onClick={() => setIsAdding(false)} className="absolute top-6 right-6 text-zinc-400 hover:text-zinc-900 transition-colors">
                 <X className="w-5 h-5" />
@@ -448,7 +448,7 @@ export default function Investments() {
             <motion.form
               initial={{ opacity: 0, scale: 0.95, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.95, y: 20 }}
               onSubmit={handleAddRecord}
-              className="bg-white dark:bg-zinc-900 p-6 md:p-8 rounded-3xl shadow-2xl border border-zinc-100 dark:border-zinc-800 w-full max-w-sm relative z-10"
+              className="bg-white/70 dark:bg-zinc-900/70 backdrop-blur-2xl border-white/30 dark:border-white/10 p-6 md:p-8 rounded-3xl shadow-2xl border w-full max-w-sm relative z-10"
             >
               <button type="button" onClick={() => setRecordModal({ ...recordModal, isOpen: false })} className="absolute top-6 right-6 text-zinc-400 hover:text-zinc-900 transition-colors">
                 <X className="w-5 h-5" />
@@ -501,7 +501,7 @@ export default function Investments() {
             <motion.form
               initial={{ opacity: 0, scale: 0.95, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.95, y: 20 }}
               onSubmit={handleTrade}
-              className="bg-white dark:bg-zinc-900 p-6 md:p-8 rounded-3xl shadow-2xl border border-zinc-100 dark:border-zinc-800 w-full max-w-sm relative z-10"
+              className="bg-white/70 dark:bg-zinc-900/70 backdrop-blur-2xl border-white/30 dark:border-white/10 p-6 md:p-8 rounded-3xl shadow-2xl border w-full max-w-sm relative z-10"
             >
               <button type="button" onClick={() => setTradeModal({ ...tradeModal, isOpen: false })} className="absolute top-6 right-6 text-zinc-400 hover:text-zinc-900 transition-colors">
                 <X className="w-5 h-5" />

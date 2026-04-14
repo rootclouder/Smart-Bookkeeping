@@ -603,7 +603,7 @@ export default function Debts() {
                             transition={{ delay: index * 0.05 }}
                             className={cn(
                               "p-6 rounded-3xl shadow-sm border relative group overflow-hidden transition-all flex flex-col h-full",
-                              isPaidOff ? "bg-zinc-50 dark:bg-zinc-800/30 border-zinc-200 dark:border-zinc-800 opacity-60" : "bg-white dark:bg-zinc-900 border-indigo-100 dark:border-indigo-900/30"
+                              isPaidOff ? "bg-white/40 dark:bg-zinc-800/40 backdrop-blur-sm border-white/10 opacity-60" : "bg-white/70 dark:bg-zinc-900/70 backdrop-blur-xl border-white/20 dark:border-white/10"
                             )}
                           >
                             <div className="flex-1">
@@ -726,7 +726,7 @@ export default function Debts() {
                             transition={{ delay: index * 0.05 }}
                             className={cn(
                               "p-6 rounded-3xl shadow-sm border relative group overflow-hidden transition-all flex flex-col h-full",
-                              isPaidOff ? "bg-zinc-50 dark:bg-zinc-800/30 border-zinc-200 dark:border-zinc-800 opacity-60" : "bg-white dark:bg-zinc-900 border-rose-100 dark:border-rose-900/30"
+                              isPaidOff ? "bg-white/40 dark:bg-zinc-800/40 backdrop-blur-sm border-white/10 opacity-60" : "bg-white/70 dark:bg-zinc-900/70 backdrop-blur-xl border-white/20 dark:border-white/10"
                             )}
                           >
                             <div className="flex-1">
@@ -833,7 +833,7 @@ export default function Debts() {
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
               onSubmit={handleAdd}
-              className="bg-white dark:bg-zinc-900 p-6 md:p-8 rounded-3xl shadow-2xl border border-rose-100 dark:border-rose-900/30 w-full max-w-2xl relative z-10 max-h-[90vh] flex flex-col"
+              className="bg-white/70 dark:bg-zinc-900/70 backdrop-blur-2xl border-white/30 dark:border-white/10 p-6 md:p-8 rounded-3xl shadow-2xl border w-full max-w-2xl relative z-10 max-h-[90vh] flex flex-col"
             >
               <button 
                 type="button"
@@ -1097,7 +1097,7 @@ export default function Debts() {
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
               onSubmit={submitRepayment}
-              className="bg-white dark:bg-zinc-900 p-6 md:p-8 rounded-3xl shadow-2xl border border-rose-100 dark:border-rose-900/30 w-full max-w-md relative z-10 flex flex-col"
+              className="bg-white/70 dark:bg-zinc-900/70 backdrop-blur-2xl border-white/30 dark:border-white/10 p-6 md:p-8 rounded-3xl shadow-2xl border w-full max-w-md relative z-10 flex flex-col"
             >
               <button 
                 type="button"

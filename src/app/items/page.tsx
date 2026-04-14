@@ -123,7 +123,7 @@ export default function Items() {
             className={cn(
               "px-5 py-2 text-sm font-bold rounded-lg transition-all whitespace-nowrap",
               activeCategory === 'all' 
-                ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white shadow-sm" 
+                ? "bg-white/80 dark:bg-zinc-800/80 backdrop-blur-md text-zinc-900 dark:text-white shadow-sm border border-white/20 dark:border-white/10" 
                 : "text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
             )}
           >
@@ -136,7 +136,7 @@ export default function Items() {
               className={cn(
                 "px-5 py-2 text-sm font-bold rounded-lg transition-all whitespace-nowrap",
                 activeCategory === cat.id 
-                  ? "bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white shadow-sm" 
+                  ? "bg-white/80 dark:bg-zinc-800/80 backdrop-blur-md text-zinc-900 dark:text-white shadow-sm border border-white/20 dark:border-white/10" 
                   : "text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
               )}
             >
@@ -147,7 +147,7 @@ export default function Items() {
         
         <button
           onClick={() => setIsCatModalOpen(true)}
-          className="flex items-center justify-center p-2.5 rounded-xl border bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-400 border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors flex-shrink-0"
+          className="flex items-center justify-center p-2.5 rounded-xl border bg-white/70 dark:bg-zinc-800/70 backdrop-blur-md border-white/20 dark:border-white/10 text-zinc-600 dark:text-zinc-400 hover:bg-white dark:hover:bg-zinc-800 transition-colors flex-shrink-0 shadow-sm"
           title="分类管理"
         >
           <Settings2 className="w-5 h-5" />
@@ -161,7 +161,7 @@ export default function Items() {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: index * 0.05 }}
-            className="bg-white dark:bg-zinc-900 p-6 rounded-3xl shadow-sm border border-zinc-100 dark:border-zinc-800 relative group overflow-hidden"
+            className="bg-white/60 dark:bg-zinc-900/60 backdrop-blur-xl border-white/20 dark:border-white/10 p-6 rounded-3xl shadow-sm border relative group overflow-hidden"
           >
             <div className="absolute -right-6 -top-6 w-24 h-24 bg-indigo-500/10 rounded-full blur-2xl group-hover:bg-indigo-500/20 transition-colors" />
             
@@ -234,7 +234,7 @@ export default function Items() {
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
               onSubmit={handleAddOrUpdate}
-              className="bg-white dark:bg-zinc-900 p-6 md:p-8 rounded-3xl shadow-2xl border border-indigo-100 dark:border-indigo-900/30 w-full max-w-md relative z-10 max-h-[90vh] flex flex-col"
+              className="bg-white/70 dark:bg-zinc-900/70 backdrop-blur-2xl border-white/30 dark:border-white/10 p-6 md:p-8 rounded-3xl shadow-2xl border w-full max-w-md relative z-10 max-h-[90vh] flex flex-col"
             >
               <button 
                 type="button"
@@ -324,7 +324,7 @@ export default function Items() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              className="bg-white dark:bg-zinc-900 p-6 md:p-8 rounded-3xl shadow-2xl border border-zinc-200 dark:border-zinc-800 w-full max-w-md relative z-10 flex flex-col max-h-[80vh]"
+              className="bg-white/70 dark:bg-zinc-900/70 backdrop-blur-2xl border-white/30 dark:border-white/10 p-6 md:p-8 rounded-3xl shadow-2xl border w-full max-w-md relative z-10 flex flex-col max-h-[80vh]"
             >
               <button 
                 type="button"
@@ -366,7 +366,7 @@ export default function Items() {
                               type="text"
                               value={editingCatName}
                               onChange={(e) => setEditingCatName(e.target.value)}
-                              className="flex-1 px-3 py-1.5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-lg text-sm outline-none focus:ring-2 focus:ring-zinc-900"
+                              className="flex-1 px-3 py-1.5 bg-white/50 dark:bg-zinc-800/50 backdrop-blur-md border border-zinc-200 dark:border-zinc-700 rounded-lg text-sm outline-none focus:ring-2 focus:ring-zinc-900"
                               autoFocus
                             />
                             <button

@@ -85,7 +85,7 @@ export default function Home() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white dark:bg-zinc-900 p-6 rounded-3xl shadow-sm border border-zinc-100 dark:border-zinc-800 relative overflow-hidden group"
+          className="bg-white/60 dark:bg-zinc-900/60 backdrop-blur-xl p-6 rounded-3xl shadow-sm border border-white/20 dark:border-white/10 relative overflow-hidden group"
         >
           <div className="absolute -right-4 -top-4 w-20 h-20 bg-indigo-500/10 rounded-full blur-2xl group-hover:bg-indigo-500/20 transition-colors" />
           <div className="flex items-center space-x-3 mb-4">
@@ -101,7 +101,7 @@ export default function Home() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="bg-white dark:bg-zinc-900 p-6 rounded-3xl shadow-sm border border-zinc-100 dark:border-zinc-800 relative overflow-hidden group"
+          className="bg-white/60 dark:bg-zinc-900/60 backdrop-blur-xl p-6 rounded-3xl shadow-sm border border-white/20 dark:border-white/10 relative overflow-hidden group"
         >
           <div className="absolute -right-4 -top-4 w-20 h-20 bg-emerald-500/10 rounded-full blur-2xl group-hover:bg-emerald-500/20 transition-colors" />
           <div className="flex items-center space-x-3 mb-4">
@@ -117,7 +117,7 @@ export default function Home() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="bg-white dark:bg-zinc-900 p-6 rounded-3xl shadow-sm border border-zinc-100 dark:border-zinc-800 relative overflow-hidden group"
+          className="bg-white/60 dark:bg-zinc-900/60 backdrop-blur-xl p-6 rounded-3xl shadow-sm border border-white/20 dark:border-white/10 relative overflow-hidden group"
         >
           <div className="absolute -right-4 -top-4 w-20 h-20 bg-rose-500/10 rounded-full blur-2xl group-hover:bg-rose-500/20 transition-colors" />
           <div className="flex items-center space-x-3 mb-4">
@@ -133,7 +133,7 @@ export default function Home() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="bg-white dark:bg-zinc-900 p-6 rounded-3xl shadow-sm border border-zinc-100 dark:border-zinc-800 relative overflow-hidden group"
+          className="bg-white/60 dark:bg-zinc-900/60 backdrop-blur-xl p-6 rounded-3xl shadow-sm border border-white/20 dark:border-white/10 relative overflow-hidden group"
         >
           <div className="absolute -right-4 -top-4 w-20 h-20 bg-amber-500/10 rounded-full blur-2xl group-hover:bg-amber-500/20 transition-colors" />
           <div className="flex items-center space-x-3 mb-4">
@@ -154,7 +154,7 @@ export default function Home() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
-            className="bg-white dark:bg-zinc-900 p-6 rounded-3xl shadow-sm border border-zinc-100 dark:border-zinc-800 flex flex-col justify-between"
+            className="bg-white/60 dark:bg-zinc-900/60 backdrop-blur-xl p-6 rounded-3xl shadow-sm border border-white/20 dark:border-white/10 flex flex-col justify-between"
           >
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center space-x-3">
@@ -180,7 +180,7 @@ export default function Home() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
-            className="bg-white dark:bg-zinc-900 p-6 rounded-3xl shadow-sm border border-zinc-100 dark:border-zinc-800 flex flex-col justify-between"
+            className="bg-white/60 dark:bg-zinc-900/60 backdrop-blur-xl p-6 rounded-3xl shadow-sm border border-white/20 dark:border-white/10 flex flex-col justify-between"
           >
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center space-x-3">
@@ -206,7 +206,7 @@ export default function Home() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6 }}
-            className="bg-white dark:bg-zinc-900 p-6 rounded-3xl shadow-sm border border-zinc-100 dark:border-zinc-800 flex flex-col justify-between"
+            className="bg-white/60 dark:bg-zinc-900/60 backdrop-blur-xl p-6 rounded-3xl shadow-sm border border-white/20 dark:border-white/10 flex flex-col justify-between"
           >
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center space-x-3">
@@ -254,7 +254,7 @@ export default function Home() {
         </div>
 
         {/* Calendar View */}
-        <div className="lg:col-span-2 bg-white dark:bg-zinc-900 p-6 rounded-3xl shadow-sm border border-zinc-100 dark:border-zinc-800">
+        <div className="lg:col-span-2 bg-white/60 dark:bg-zinc-900/60 backdrop-blur-xl p-6 rounded-3xl shadow-sm border border-white/20 dark:border-white/10">
           <div className="flex items-center justify-between mb-6">
             <h3 className="font-semibold text-lg">{format(currentDate, 'yyyy年 MM月')}</h3>
             <div className="flex space-x-2">

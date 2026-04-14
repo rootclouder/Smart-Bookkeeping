@@ -211,7 +211,7 @@ export function IntroPage() {
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              className="relative z-10 bg-white dark:bg-zinc-900 p-8 rounded-3xl shadow-2xl max-w-sm w-full text-center"
+              className="relative z-10 bg-white/70 dark:bg-zinc-900/70 backdrop-blur-2xl p-8 rounded-3xl shadow-2xl max-w-sm w-full text-center border border-white/20 dark:border-white/10"
             >
               <button
                 onClick={() => setShowQR(false)}

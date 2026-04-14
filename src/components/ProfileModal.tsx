@@ -101,7 +101,7 @@ export function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            className="relative z-10 bg-white dark:bg-zinc-900 p-6 md:p-8 rounded-3xl shadow-2xl max-w-sm w-full border border-zinc-100 dark:border-zinc-800"
+            className="relative z-10 bg-white/70 dark:bg-zinc-900/70 backdrop-blur-2xl border-white/30 dark:border-white/10 p-6 md:p-8 rounded-3xl shadow-2xl max-w-sm w-full border"
           >
             <button
               onClick={onClose}
