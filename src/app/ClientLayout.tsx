@@ -6,12 +6,14 @@ import { usePathname } from 'next/navigation';
 import { useSession, signOut } from 'next-auth/react';
 import { LayoutDashboard, Wallet, Box, CreditCard, Plus, TrendingUp, BarChart3, Tag, User as UserIcon, LogOut } from 'lucide-react';
 import { RecordModal } from '@/components/RecordModal';
+import { ProfileModal } from '@/components/ProfileModal';
 import { WelcomePage } from '@/components/WelcomePage';
 import { cn } from '@/lib/utils';
 import { useStore } from '@/store/useStore';
 
 export function ClientLayout({ children }: { children: React.ReactNode }) {
   const [isRecordModalOpen, setIsRecordModalOpen] = useState(false);
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const pathname = usePathname();
   const { data: session, status } = useSession();
   
@@ -82,10 +84,14 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
         {/* User Auth Section (Sidebar) */}
         <div className="p-4 border-t border-zinc-200 dark:border-zinc-800">
           {session?.user ? (
-            <div className="flex items-center justify-between p-2 rounded-xl bg-zinc-50 dark:bg-zinc-800/50">
-              <div className="flex items-center overflow-hidden">
+            <div className="flex items-center justify-between p-2 rounded-xl bg-zinc-50 dark:bg-zinc-800/50 group">
+              <button 
+                onClick={() => setIsProfileModalOpen(true)}
+                className="flex items-center overflow-hidden flex-1 hover:opacity-80 transition-opacity text-left"
+                title="编辑个人资料"
+              >
                 {session.user.image ? (
-                  <img src={session.user.image} alt="Avatar" className="w-8 h-8 rounded-full bg-zinc-200 shrink-0" />
+                  <img src={session.user.image} alt="Avatar" className="w-8 h-8 rounded-full bg-zinc-200 shrink-0 object-cover" />
                 ) : (
                   <div className="w-8 h-8 rounded-full bg-zinc-200 dark:bg-zinc-700 flex items-center justify-center shrink-0">
                     <UserIcon className="w-4 h-4 text-zinc-500" />
@@ -94,10 +100,10 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
                 <span className="ml-3 text-sm font-medium truncate pr-2">
                   {session.user.name || 'User'}
                 </span>
-              </div>
+              </button>
               <button 
                 onClick={() => signOut({ callbackUrl: '/' })}
-                className="p-2 text-zinc-400 hover:text-rose-500 transition-colors shrink-0"
+                className="p-2 text-zinc-400 hover:text-rose-500 transition-colors shrink-0 opacity-0 group-hover:opacity-100"
                 title="退出登录"
               >
                 <LogOut className="w-4 h-4" />
@@ -191,6 +197,12 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
       <RecordModal
         isOpen={isRecordModalOpen}
         onClose={() => setIsRecordModalOpen(false)}
+      />
+
+      {/* Profile Modal */}
+      <ProfileModal
+        isOpen={isProfileModalOpen}
+        onClose={() => setIsProfileModalOpen(false)}
       />
     </div>
   );
