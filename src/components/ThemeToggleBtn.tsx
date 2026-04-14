@@ -28,7 +28,17 @@ export function ThemeToggleBtn({ className = '' }: { className?: string }) {
     );
 
     // @ts-ignore - View Transition API
-    const transition = document.startViewTransition(() => {
+    const transition = document.startViewTransition(async () => {
+      // Force a synchronous DOM update for the View Transition API to capture
+      if (targetTheme === 'dark') {
+        document.documentElement.classList.add('dark');
+        document.documentElement.style.colorScheme = 'dark';
+      } else {
+        document.documentElement.classList.remove('dark');
+        document.documentElement.style.colorScheme = 'light';
+      }
+      
+      // Update React state via next-themes
       setTheme(targetTheme);
     });
 
@@ -42,7 +52,7 @@ export function ThemeToggleBtn({ className = '' }: { className?: string }) {
           clipPath: targetTheme === 'dark' ? clipPath : [...clipPath].reverse(),
         },
         {
-          duration: 500,
+          duration: 700,
           easing: 'ease-in-out',
           pseudoElement: targetTheme === 'dark' 
             ? '::view-transition-new(root)' 

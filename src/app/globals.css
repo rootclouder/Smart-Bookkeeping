@@ -12,6 +12,7 @@
 ::view-transition-new(root) {
   animation: none;
   mix-blend-mode: normal;
+  display: block;
 }
 ::view-transition-old(root) {
   z-index: 1;
@@ -19,10 +20,10 @@
 ::view-transition-new(root) {
   z-index: 9999;
 }
-.dark::view-transition-old(root) {
+html.dark::view-transition-old(root) {
   z-index: 9999;
 }
-.dark::view-transition-new(root) {
+html.dark::view-transition-new(root) {
   z-index: 1;
 }
 
