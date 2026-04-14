@@ -108,13 +108,13 @@ export function IntroPage() {
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         {theme === 'dark' ? (
           <>
-            <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-emerald-500/10 blur-[120px] mix-blend-screen" />
-            <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-indigo-500/10 blur-[120px] mix-blend-screen" />
+            <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-blue-500/10 blur-[120px] mix-blend-screen" />
+            <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-sky-500/10 blur-[120px] mix-blend-screen" />
           </>
         ) : (
           <>
-            <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-emerald-200/40 blur-[100px] mix-blend-multiply" />
-            <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-indigo-200/40 blur-[100px] mix-blend-multiply" />
+            <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-blue-200/40 blur-[100px] mix-blend-multiply" />
+            <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-sky-200/40 blur-[100px] mix-blend-multiply" />
           </>
         )}
       </div>
@@ -132,7 +132,7 @@ export function IntroPage() {
         animate="visible"
       >
         <motion.div variants={itemVariants} className={`inline-flex items-center space-x-2 border rounded-full px-4 py-1.5 mb-8 backdrop-blur-md ${theme === 'dark' ? 'bg-white/5 border-white/10' : 'bg-black/5 border-black/10'}`}>
-          <span className="flex h-2 w-2 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.8)]"></span>
+          <span className="flex h-2 w-2 rounded-full bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.8)]"></span>
           <span className={`text-xs font-medium tracking-wide ${theme === 'dark' ? 'text-zinc-300' : 'text-slate-600'}`}>
             新一代智慧财务中心
           </span>
@@ -143,7 +143,7 @@ export function IntroPage() {
           className="text-5xl sm:text-6xl md:text-7xl font-extrabold tracking-tight mb-6 leading-tight"
         >
           智慧财务中心<br />
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 via-teal-400 to-indigo-500">
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-sky-500 to-cyan-500 dark:from-blue-400 dark:via-sky-400 dark:to-cyan-300">
             每一分财富流向
           </span>
         </motion.h1>
@@ -163,7 +163,7 @@ export function IntroPage() {
             { icon: ShieldCheck, title: '隐私安全', desc: '本地+云端双重加密保护' }
           ].map((feature, i) => (
             <div key={i} className={`p-6 rounded-2xl flex flex-col items-center border backdrop-blur-sm ${theme === 'dark' ? 'bg-white/5 border-white/10' : 'bg-white/50 border-black/5 shadow-sm'}`}>
-              <div className={`p-3 rounded-xl mb-4 ${theme === 'dark' ? 'bg-zinc-800' : 'bg-indigo-50 text-indigo-600'}`}>
+              <div className={`p-3 rounded-xl mb-4 ${theme === 'dark' ? 'bg-zinc-800 text-blue-400' : 'bg-blue-50 text-blue-600'}`}>
                 <feature.icon className="w-6 h-6" />
               </div>
               <h3 className="font-semibold text-lg mb-2">{feature.title}</h3>

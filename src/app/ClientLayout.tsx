@@ -65,15 +65,15 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
       <div className="absolute inset-0 z-0 pointer-events-none fixed">
         {mounted && theme === 'dark' ? (
           <>
-            <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] rounded-full bg-emerald-500/10 blur-[120px] mix-blend-screen" />
-            <div className="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] rounded-full bg-indigo-500/10 blur-[120px] mix-blend-screen" />
-            <div className="absolute top-[40%] left-[30%] w-[40%] h-[40%] rounded-full bg-teal-500/5 blur-[100px] mix-blend-screen" />
+            <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] rounded-full bg-blue-500/10 blur-[120px] mix-blend-screen" />
+            <div className="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] rounded-full bg-sky-500/10 blur-[120px] mix-blend-screen" />
+            <div className="absolute top-[40%] left-[30%] w-[40%] h-[40%] rounded-full bg-cyan-500/5 blur-[100px] mix-blend-screen" />
           </>
         ) : mounted ? (
           <>
-            <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] rounded-full bg-emerald-200/40 blur-[100px] mix-blend-multiply" />
-            <div className="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] rounded-full bg-indigo-200/40 blur-[100px] mix-blend-multiply" />
-            <div className="absolute top-[40%] left-[30%] w-[40%] h-[40%] rounded-full bg-teal-200/20 blur-[100px] mix-blend-multiply" />
+            <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] rounded-full bg-blue-200/40 blur-[100px] mix-blend-multiply" />
+            <div className="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] rounded-full bg-sky-200/40 blur-[100px] mix-blend-multiply" />
+            <div className="absolute top-[40%] left-[30%] w-[40%] h-[40%] rounded-full bg-cyan-200/20 blur-[100px] mix-blend-multiply" />
           </>
         ) : null}
         
@@ -98,12 +98,12 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
                 cn(
                   'flex items-center px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200',
                   isActive
-                    ? 'bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-400'
+                    ? 'bg-blue-500/10 dark:bg-blue-500/20 text-blue-700 dark:text-blue-400'
                     : 'text-zinc-500 hover:bg-zinc-100/50 dark:hover:bg-zinc-800/50 hover:text-zinc-900 dark:hover:text-zinc-100'
                 )
               }
             >
-              <item.icon className={cn("w-5 h-5 mr-3", isActive ? "text-emerald-600 dark:text-emerald-400" : "")} />
+              <item.icon className={cn("w-5 h-5 mr-3", isActive ? "text-blue-600 dark:text-blue-400" : "")} />
               {item.label}
             </Link>
           )})}
@@ -155,7 +155,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
               </div>
               <button 
                 onClick={() => setGuestMode(false)}
-                className="p-2 text-zinc-400 hover:text-emerald-500 transition-colors shrink-0"
+                className="p-2 text-zinc-400 hover:text-blue-500 transition-colors shrink-0"
                 title="返回登录页"
               >
                 <LogOut className="w-4 h-4" />
@@ -214,7 +214,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
               cn(
                 'flex flex-col items-center justify-center w-full h-full text-xs transition-colors',
                 isActive
-                  ? 'text-emerald-600 dark:text-emerald-400'
+                  ? 'text-blue-600 dark:text-blue-400'
                   : 'text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100'
               )
             }
@@ -228,7 +228,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
       {/* Floating Action Button */}
       <button
         onClick={() => setIsRecordModalOpen(true)}
-        className="fixed right-6 bottom-24 md:bottom-10 w-14 h-14 bg-emerald-500 hover:bg-emerald-600 dark:bg-emerald-500 dark:hover:bg-emerald-400 text-white rounded-2xl shadow-[0_8px_30px_rgba(16,185,129,0.3)] hover:shadow-[0_8px_30px_rgba(16,185,129,0.5)] hover:-translate-y-1 active:scale-95 transition-all duration-300 flex items-center justify-center z-50 group"
+        className="fixed right-6 bottom-24 md:bottom-10 w-14 h-14 bg-blue-500 hover:bg-blue-600 dark:bg-blue-500 dark:hover:bg-blue-400 text-white rounded-2xl shadow-[0_8px_30px_rgba(59,130,246,0.3)] hover:shadow-[0_8px_30px_rgba(59,130,246,0.5)] hover:-translate-y-1 active:scale-95 transition-all duration-300 flex items-center justify-center z-50 group"
       >
         <Plus className="w-6 h-6 group-hover:rotate-90 transition-transform duration-300" />
       </button>
