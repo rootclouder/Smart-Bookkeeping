@@ -16,8 +16,10 @@ export async function PUT(req: Request) {
     const { name, image } = body;
 
     // @ts-ignore
+    const userId = (session.user as any).id;
+
     const user = await prisma.user.update({
-      where: { id: session.user.id },
+      where: { id: userId },
       data: {
         ...(name !== undefined && { name }),
         ...(image !== undefined && { image }),
