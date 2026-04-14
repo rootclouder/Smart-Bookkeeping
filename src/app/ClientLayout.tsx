@@ -60,9 +60,29 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <div className="flex h-screen bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100">
+    <div className="flex h-screen text-zinc-900 dark:text-zinc-100 relative overflow-hidden bg-transparent">
+      {/* Ambient Background Effects */}
+      <div className="absolute inset-0 z-0 pointer-events-none fixed">
+        {mounted && theme === 'dark' ? (
+          <>
+            <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] rounded-full bg-emerald-500/10 blur-[120px] mix-blend-screen" />
+            <div className="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] rounded-full bg-indigo-500/10 blur-[120px] mix-blend-screen" />
+            <div className="absolute top-[40%] left-[30%] w-[40%] h-[40%] rounded-full bg-teal-500/5 blur-[100px] mix-blend-screen" />
+          </>
+        ) : mounted ? (
+          <>
+            <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] rounded-full bg-emerald-200/40 blur-[100px] mix-blend-multiply" />
+            <div className="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] rounded-full bg-indigo-200/40 blur-[100px] mix-blend-multiply" />
+            <div className="absolute top-[40%] left-[30%] w-[40%] h-[40%] rounded-full bg-teal-200/20 blur-[100px] mix-blend-multiply" />
+          </>
+        ) : null}
+        
+        {/* Subtle grid overlay */}
+        <div className={`absolute inset-0 ${mounted && theme === 'dark' ? "bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCI+CjxyZWN0IHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgZmlsbD0ibm9uZSIvPgo8cGF0aCBkPSJNMCA0MEwwIDBMMDAgME00MCAwTDQwIDQwTDAgNDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsIDI1NSwgMjU1LCAwLjAyKSIgc3Ryb2tlLXdpZHRoPSIxIi8+Cjwvc3ZnPg==')] mix-blend-overlay" : "bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCI+CjxyZWN0IHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgZmlsbD0ibm9uZSIvPgo8cGF0aCBkPSJNMCA0MEwwIDBMMDAgME00MCAwTDQwIDQwTDAgNDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgwLCAwLCAwLCAwLjAyKSIgc3Ryb2tlLXdpZHRoPSIxIi8+Cjwvc3ZnPg==')] mix-blend-multiply"} opacity-50`} />
+      </div>
+
       {/* Sidebar */}
-      <aside className="w-64 border-r border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hidden md:flex flex-col">
+      <aside className="w-64 border-r border-zinc-200/50 dark:border-zinc-800/50 bg-white/70 dark:bg-zinc-950/70 backdrop-blur-2xl hidden md:flex flex-col relative z-10">
         <div className="h-16 flex items-center px-6 font-semibold text-lg tracking-tight">
           <img src="/icon.svg" alt="Logo" className="w-8 h-8 rounded-lg mr-3 shadow-sm" />
           智慧财务中心
@@ -76,21 +96,21 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
               href={item.to}
               className={
                 cn(
-                  'flex items-center px-3 py-2.5 rounded-lg text-sm font-medium transition-colors',
+                  'flex items-center px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200',
                   isActive
-                    ? 'bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100'
-                    : 'text-zinc-500 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 hover:text-zinc-900 dark:hover:text-zinc-100'
+                    ? 'bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-400'
+                    : 'text-zinc-500 hover:bg-zinc-100/50 dark:hover:bg-zinc-800/50 hover:text-zinc-900 dark:hover:text-zinc-100'
                 )
               }
             >
-              <item.icon className="w-5 h-5 mr-3" />
+              <item.icon className={cn("w-5 h-5 mr-3", isActive ? "text-emerald-600 dark:text-emerald-400" : "")} />
               {item.label}
             </Link>
           )})}
         </nav>
         
         {/* User Auth Section (Sidebar) */}
-        <div className="p-4 border-t border-zinc-200 dark:border-zinc-800">
+        <div className="p-4 border-t border-zinc-200/50 dark:border-zinc-800/50">
           <div className="mb-4 flex items-center justify-between px-2 text-zinc-500 text-sm font-medium">
             <span>主题模式</span>
             {mounted && (
@@ -146,8 +166,8 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 overflow-auto relative">
-        <div className="md:hidden h-16 border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between px-4 bg-white dark:bg-zinc-900 font-semibold">
+      <main className="flex-1 overflow-auto relative z-10 flex flex-col bg-transparent">
+        <div className="md:hidden h-16 border-b border-zinc-200/50 dark:border-zinc-800/50 flex items-center justify-between px-4 bg-white/70 dark:bg-zinc-950/70 backdrop-blur-xl font-semibold sticky top-0 z-20">
           <div className="flex items-center">
             <img src="/icon.svg" alt="Logo" className="w-8 h-8 rounded-lg mr-3 shadow-sm" />
             智慧财务中心
@@ -176,14 +196,14 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
             )}
           </div>
         </div>
-        <div className="p-6 md:p-8 max-w-6xl mx-auto pb-24 md:pb-8">
+        <div className="p-6 md:p-8 max-w-6xl mx-auto pb-24 md:pb-8 flex-1 w-full">
           {children}
         </div>
       </main>
 
 
       {/* Mobile Nav */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 h-16 border-t border-zinc-200 dark:border-zinc-800 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-md flex justify-around items-center px-2 z-40">
+      <div className="md:hidden fixed bottom-0 left-0 right-0 h-16 border-t border-zinc-200/50 dark:border-zinc-800/50 bg-white/70 dark:bg-zinc-950/70 backdrop-blur-xl flex items-center justify-around px-4 z-20 pb-safe">
         {navItems.map((item) => {
           const isActive = pathname === item.to;
           return (
@@ -194,7 +214,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
               cn(
                 'flex flex-col items-center justify-center w-full h-full text-xs transition-colors',
                 isActive
-                  ? 'text-zinc-900 dark:text-zinc-100'
+                  ? 'text-emerald-600 dark:text-emerald-400'
                   : 'text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100'
               )
             }
@@ -208,7 +228,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
       {/* Floating Action Button */}
       <button
         onClick={() => setIsRecordModalOpen(true)}
-        className="fixed right-6 bottom-24 md:bottom-10 w-14 h-14 bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 rounded-2xl shadow-xl hover:scale-105 active:scale-95 transition-transform flex items-center justify-center z-50 group"
+        className="fixed right-6 bottom-24 md:bottom-10 w-14 h-14 bg-emerald-500 hover:bg-emerald-600 dark:bg-emerald-500 dark:hover:bg-emerald-400 text-white rounded-2xl shadow-[0_8px_30px_rgba(16,185,129,0.3)] hover:shadow-[0_8px_30px_rgba(16,185,129,0.5)] hover:-translate-y-1 active:scale-95 transition-all duration-300 flex items-center justify-center z-50 group"
       >
         <Plus className="w-6 h-6 group-hover:rotate-90 transition-transform duration-300" />
       </button>
