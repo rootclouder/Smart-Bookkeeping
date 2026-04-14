@@ -61,3 +61,13 @@ model VerificationToken {
 
   @@unique([identifier, token])
 }
+
+model WechatLoginSession {
+  id        String   @id @default(cuid())
+  sceneId   String   @unique
+  ticket    String?
+  status    String   @default("pending") // pending, scanned, expired
+  openid    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
