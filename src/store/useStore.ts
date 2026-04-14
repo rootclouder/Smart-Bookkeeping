@@ -168,6 +168,12 @@ interface AppState {
 
   isGuestMode: boolean;
   setGuestMode: (isGuestMode: boolean) => void;
+  
+  hasSeenIntro: boolean;
+  setHasSeenIntro: (val: boolean) => void;
+  
+  theme: 'light' | 'dark';
+  setTheme: (theme: 'light' | 'dark') => void;
 }
 
 export const useStore = create<AppState>()(
@@ -175,6 +181,10 @@ export const useStore = create<AppState>()(
     (set) => ({
       isGuestMode: false,
       setGuestMode: (isGuestMode) => set({ isGuestMode }),
+      hasSeenIntro: false,
+      setHasSeenIntro: (hasSeenIntro) => set({ hasSeenIntro }),
+      theme: 'dark', // default to dark
+      setTheme: (theme) => set({ theme }),
       accounts: [
         { id: '1', name: '现金钱包', type: 'cash', balance: 0 },
       ],

@@ -8,6 +8,7 @@ import { useTheme } from 'next-themes';
 import { LayoutDashboard, Wallet, Box, CreditCard, Plus, TrendingUp, BarChart3, Tag, User as UserIcon, LogOut, Sun, Moon } from 'lucide-react';
 import { RecordModal } from '@/components/RecordModal';
 import { ProfileModal } from '@/components/ProfileModal';
+import { IntroPage } from '@/components/IntroPage';
 import { WelcomePage } from '@/components/WelcomePage';
 import { cn } from '@/lib/utils';
 import { useStore } from '@/store/useStore';
@@ -22,6 +23,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
   
   const isGuestMode = useStore((state) => state.isGuestMode);
   const setGuestMode = useStore((state) => state.setGuestMode);
+  const hasSeenIntro = useStore((state) => state.hasSeenIntro);
 
   useEffect(() => {
     setMounted(true);
@@ -57,6 +59,9 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
   }
 
   if (status === 'unauthenticated' && !isGuestMode) {
+    if (!hasSeenIntro) {
+      return <IntroPage />;
+    }
     return <WelcomePage />;
   }
 

@@ -19,7 +19,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="zh-CN" suppressHydrationWarning>
-      <body className={`${inter.className} antialiased`}>
+      <body className={`${inter.className} antialiased transition-colors duration-1000 dark:bg-zinc-950 dark:text-zinc-100 bg-white text-zinc-900`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <NextAuthProvider>
             <ClientLayout>{children}</ClientLayout>

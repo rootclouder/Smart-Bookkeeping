@@ -4,10 +4,18 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { signIn } from 'next-auth/react';
 import { useStore } from '@/store/useStore';
+import { useTheme } from 'next-themes';
 import { MessageCircle, ArrowRight, ShieldCheck, Zap, LineChart, Loader2, X } from 'lucide-react';
+import { ThemeToggleBtn } from './ThemeToggleBtn';
 
 export function WelcomePage() {
   const setGuestMode = useStore((state) => state.setGuestMode);
+  const { resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => setMounted(true), []);
+
+  const theme = mounted ? resolvedTheme : 'dark';
   
   const [showQR, setShowQR] = useState(false);
   const [qrUrl, setQrUrl] = useState('');
@@ -86,15 +94,30 @@ export function WelcomePage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#050505] text-white relative overflow-hidden flex items-center justify-center font-sans">
+    <div className={`min-h-screen relative overflow-hidden flex items-center justify-center font-sans transition-colors duration-1000 ${theme === 'dark' ? 'bg-[#050505] text-white' : 'bg-slate-50 text-slate-900'}`}>
+      {/* Theme Toggle */}
+      <div className="absolute top-0 right-0 p-6 z-50">
+        <ThemeToggleBtn />
+      </div>
+
       {/* Ambient Background Effects */}
-      <div className="absolute inset-0 z-0">
-        <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] rounded-full bg-emerald-500/10 blur-[120px] mix-blend-screen" />
-        <div className="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] rounded-full bg-indigo-500/10 blur-[120px] mix-blend-screen" />
-        <div className="absolute top-[40%] left-[30%] w-[40%] h-[40%] rounded-full bg-teal-500/5 blur-[100px] mix-blend-screen" />
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        {theme === 'dark' ? (
+          <>
+            <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] rounded-full bg-emerald-500/10 blur-[120px] mix-blend-screen" />
+            <div className="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] rounded-full bg-indigo-500/10 blur-[120px] mix-blend-screen" />
+            <div className="absolute top-[40%] left-[30%] w-[40%] h-[40%] rounded-full bg-teal-500/5 blur-[100px] mix-blend-screen" />
+          </>
+        ) : (
+          <>
+            <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] rounded-full bg-emerald-200/40 blur-[100px] mix-blend-multiply" />
+            <div className="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] rounded-full bg-indigo-200/40 blur-[100px] mix-blend-multiply" />
+            <div className="absolute top-[40%] left-[30%] w-[40%] h-[40%] rounded-full bg-teal-200/20 blur-[100px] mix-blend-multiply" />
+          </>
+        )}
         
         {/* Subtle grid overlay */}
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCI+CjxyZWN0IHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgZmlsbD0ibm9uZSIvPgo8cGF0aCBkPSJNMCA0MEwwIDBMMDAgME00MCAwTDQwIDQwTDAgNDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsIDI1NSwgMjU1LCAwLjAyKSIgc3Ryb2tlLXdpZHRoPSIxIi8+Cjwvc3ZnPg==')] opacity-50 mix-blend-overlay" />
+        <div className={`absolute inset-0 ${theme === 'dark' ? "bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCI+CjxyZWN0IHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgZmlsbD0ibm9uZSIvPgo8cGF0aCBkPSJNMCA0MEwwIDBMMDAgME00MCAwTDQwIDQwTDAgNDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsIDI1NSwgMjU1LCAwLjAyKSIgc3Ryb2tlLXdpZHRoPSIxIi8+Cjwvc3ZnPg==')] mix-blend-overlay" : "bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCI+CjxyZWN0IHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgZmlsbD0ibm9uZSIvPgo8cGF0aCBkPSJNMCA0MEwwIDBMMDAgME00MCAwTDQwIDQwTDAgNDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgwLCAwLCAwLCAwLjAyKSIgc3Ryb2tlLXdpZHRoPSIxIi8+Cjwvc3ZnPg==')] mix-blend-multiply"} opacity-50`} />
       </div>
 
       {/* Main Content */}
@@ -107,14 +130,14 @@ export function WelcomePage() {
           initial="hidden"
           animate="visible"
         >
-          <motion.div variants={itemVariants} className="inline-flex items-center space-x-2 bg-white/5 border border-white/10 rounded-full px-4 py-1.5 mb-8 backdrop-blur-md">
+          <motion.div variants={itemVariants} className={`inline-flex items-center space-x-2 border rounded-full px-4 py-1.5 mb-8 backdrop-blur-md ${theme === 'dark' ? 'bg-white/5 border-white/10' : 'bg-black/5 border-black/10'}`}>
             <span className="flex h-2 w-2 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.8)]"></span>
-            <span className="text-xs font-medium tracking-wide text-zinc-300">新一代个人财务中心</span>
+            <span className={`text-xs font-medium tracking-wide ${theme === 'dark' ? 'text-zinc-300' : 'text-slate-600'}`}>新一代个人财务中心</span>
           </motion.div>
           
           <motion.h1 
             variants={itemVariants}
-            className="text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6 leading-[1.1] text-white"
+            className={`text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6 leading-[1.1] ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}
           >
             智慧财务管理<br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-indigo-400">
@@ -124,7 +147,7 @@ export function WelcomePage() {
           
           <motion.p 
             variants={itemVariants}
-            className="text-lg sm:text-xl text-zinc-400 mb-10 max-w-2xl mx-auto lg:mx-0 font-light leading-relaxed"
+            className={`text-lg sm:text-xl mb-10 max-w-2xl mx-auto lg:mx-0 font-light leading-relaxed ${theme === 'dark' ? 'text-zinc-400' : 'text-slate-600'}`}
           >
             告别繁杂账本，用数据驱动决策。支持多账户同步、投资收益追踪与资产深度分析，让您的每一笔财富流向清晰可见。
           </motion.p>
@@ -143,14 +166,14 @@ export function WelcomePage() {
             
             <button
               onClick={() => setGuestMode(true)}
-              className="group w-full sm:w-auto px-8 py-4 bg-white/5 hover:bg-white/10 border border-white/10 text-white rounded-2xl font-bold text-lg backdrop-blur-md transition-all duration-300 hover:-translate-y-1 flex items-center justify-center"
+              className={`group w-full sm:w-auto px-8 py-4 border rounded-2xl font-bold text-lg backdrop-blur-md transition-all duration-300 hover:-translate-y-1 flex items-center justify-center ${theme === 'dark' ? 'bg-white/5 hover:bg-white/10 border-white/10 text-white' : 'bg-black/5 hover:bg-black/10 border-black/10 text-slate-900'}`}
             >
               在线体验
               <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
             </button>
           </motion.div>
           
-          <motion.p variants={itemVariants} className="mt-6 text-xs text-zinc-500">
+          <motion.p variants={itemVariants} className={`mt-6 text-xs ${theme === 'dark' ? 'text-zinc-500' : 'text-slate-500'}`}>
             * 微信登录后数据将安全加密同步至云端；在线体验数据仅保留在本地。
           </motion.p>
         </motion.div>
@@ -167,16 +190,16 @@ export function WelcomePage() {
             <motion.div 
               animate={{ y: [0, -10, 0] }}
               transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
-              className="absolute top-[10%] right-[10%] w-[70%] h-[40%] bg-white/5 border border-white/10 backdrop-blur-xl rounded-3xl p-6 shadow-2xl z-20"
+              className={`absolute top-[10%] right-[10%] w-[70%] h-[40%] border backdrop-blur-xl rounded-3xl p-6 shadow-2xl z-20 ${theme === 'dark' ? 'bg-white/5 border-white/10' : 'bg-white/60 border-white/40'}`}
             >
               <div className="flex items-center space-x-3 mb-4">
                 <div className="p-2 bg-emerald-500/20 rounded-xl">
-                  <LineChart className="w-5 h-5 text-emerald-400" />
+                  <LineChart className="w-5 h-5 text-emerald-500" />
                 </div>
-                <div className="text-sm font-medium text-zinc-300">本月净资产增长</div>
+                <div className={`text-sm font-medium ${theme === 'dark' ? 'text-zinc-300' : 'text-slate-600'}`}>本月净资产增长</div>
               </div>
-              <div className="text-4xl font-bold text-white tracking-tight">+ ¥12,450.00</div>
-              <div className="mt-4 h-1 w-full bg-zinc-800 rounded-full overflow-hidden">
+              <div className={`text-4xl font-bold tracking-tight ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>+ ¥12,450.00</div>
+              <div className={`mt-4 h-1 w-full rounded-full overflow-hidden ${theme === 'dark' ? 'bg-zinc-800' : 'bg-slate-200'}`}>
                 <div className="h-full bg-gradient-to-r from-emerald-400 to-teal-400 w-[75%]" />
               </div>
             </motion.div>
@@ -185,15 +208,15 @@ export function WelcomePage() {
             <motion.div 
               animate={{ y: [0, 10, 0] }}
               transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
-              className="absolute bottom-[15%] left-[5%] w-[60%] h-[35%] bg-white/5 border border-white/10 backdrop-blur-xl rounded-3xl p-6 shadow-2xl z-30"
+              className={`absolute bottom-[15%] left-[5%] w-[60%] h-[35%] border backdrop-blur-xl rounded-3xl p-6 shadow-2xl z-30 ${theme === 'dark' ? 'bg-white/5 border-white/10' : 'bg-white/60 border-white/40'}`}
             >
               <div className="flex items-center space-x-3 mb-4">
                 <div className="p-2 bg-indigo-500/20 rounded-xl">
-                  <ShieldCheck className="w-5 h-5 text-indigo-400" />
+                  <ShieldCheck className="w-5 h-5 text-indigo-500" />
                 </div>
-                <div className="text-sm font-medium text-zinc-300">数据安全保护</div>
+                <div className={`text-sm font-medium ${theme === 'dark' ? 'text-zinc-300' : 'text-slate-600'}`}>数据安全保护</div>
               </div>
-              <div className="text-sm text-zinc-400 leading-relaxed">
+              <div className={`text-sm leading-relaxed ${theme === 'dark' ? 'text-zinc-400' : 'text-slate-500'}`}>
                 银行级加密传输，您的财务隐私不可触碰。
               </div>
             </motion.div>
