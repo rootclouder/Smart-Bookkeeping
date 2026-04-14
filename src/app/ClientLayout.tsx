@@ -189,7 +189,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
             ) : (
               <button 
                 onClick={() => setGuestMode(false)}
-                className="text-xs px-3 py-1.5 bg-zinc-100 dark:bg-zinc-800 rounded-lg text-zinc-500 hover:text-zinc-900 transition-colors"
+                className="text-xs px-3 py-1.5 bg-zinc-100 dark:bg-zinc-800 rounded-lg text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
               >
                 在线体验
               </button>

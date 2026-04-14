@@ -390,7 +390,7 @@ export default function Investments() {
               onSubmit={handleAddOrUpdate}
               className="bg-white/70 dark:bg-zinc-900/70 backdrop-blur-2xl border-white/30 dark:border-white/10 p-6 md:p-8 rounded-3xl shadow-2xl border w-full max-w-md relative z-10"
             >
-              <button type="button" onClick={() => setIsAdding(false)} className="absolute top-6 right-6 text-zinc-400 hover:text-zinc-900 transition-colors">
+              <button type="button" onClick={() => setIsAdding(false)} className="absolute top-6 right-6 text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors">
                 <X className="w-5 h-5" />
               </button>
               
@@ -450,7 +450,7 @@ export default function Investments() {
               onSubmit={handleAddRecord}
               className="bg-white/70 dark:bg-zinc-900/70 backdrop-blur-2xl border-white/30 dark:border-white/10 p-6 md:p-8 rounded-3xl shadow-2xl border w-full max-w-sm relative z-10"
             >
-              <button type="button" onClick={() => setRecordModal({ ...recordModal, isOpen: false })} className="absolute top-6 right-6 text-zinc-400 hover:text-zinc-900 transition-colors">
+              <button type="button" onClick={() => setRecordModal({ ...recordModal, isOpen: false })} className="absolute top-6 right-6 text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors">
                 <X className="w-5 h-5" />
               </button>
               
@@ -503,7 +503,7 @@ export default function Investments() {
               onSubmit={handleTrade}
               className="bg-white/70 dark:bg-zinc-900/70 backdrop-blur-2xl border-white/30 dark:border-white/10 p-6 md:p-8 rounded-3xl shadow-2xl border w-full max-w-sm relative z-10"
             >
-              <button type="button" onClick={() => setTradeModal({ ...tradeModal, isOpen: false })} className="absolute top-6 right-6 text-zinc-400 hover:text-zinc-900 transition-colors">
+              <button type="button" onClick={() => setTradeModal({ ...tradeModal, isOpen: false })} className="absolute top-6 right-6 text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors">
                 <X className="w-5 h-5" />
               </button>
               

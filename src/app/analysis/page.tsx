@@ -331,7 +331,7 @@ export default function Analysis() {
                     type="date"
                     value={filterDate}
                     onChange={(e) => setFilterDate(e.target.value)}
-                    className="w-full px-3 py-2.5 bg-white/50 dark:bg-zinc-800/50 backdrop-blur-md border border-zinc-200 dark:border-zinc-700 rounded-xl text-sm focus:ring-2 focus:ring-zinc-900 outline-none transition-all"
+                    className="w-full px-3 py-2.5 bg-white/50 dark:bg-zinc-800/50 backdrop-blur-md border border-zinc-200 dark:border-zinc-700 rounded-xl text-sm focus:ring-2 focus:ring-zinc-900 dark:focus:ring-zinc-100 outline-none transition-all"
                   />
                 </div>
                 <div>
@@ -339,7 +339,7 @@ export default function Analysis() {
                   <select
                     value={filterAccount}
                     onChange={(e) => setFilterAccount(e.target.value)}
-                    className="w-full px-3 py-2.5 bg-white/50 dark:bg-zinc-800/50 backdrop-blur-md border border-zinc-200 dark:border-zinc-700 rounded-xl text-sm focus:ring-2 focus:ring-zinc-900 outline-none transition-all"
+                    className="w-full px-3 py-2.5 bg-white/50 dark:bg-zinc-800/50 backdrop-blur-md border border-zinc-200 dark:border-zinc-700 rounded-xl text-sm focus:ring-2 focus:ring-zinc-900 dark:focus:ring-zinc-100 outline-none transition-all"
                   >
                     <option value="all">所有账户</option>
                     {accounts.map(acc => (
@@ -355,12 +355,12 @@ export default function Analysis() {
                       value={filterKeyword}
                       onChange={(e) => setFilterKeyword(e.target.value)}
                       placeholder="搜索分类、备注..."
-                      className="w-full px-3 py-2.5 bg-white/50 dark:bg-zinc-800/50 backdrop-blur-md border border-zinc-200 dark:border-zinc-700 rounded-xl text-sm focus:ring-2 focus:ring-zinc-900 outline-none transition-all pr-8"
+                      className="w-full px-3 py-2.5 bg-white/50 dark:bg-zinc-800/50 backdrop-blur-md border border-zinc-200 dark:border-zinc-700 rounded-xl text-sm focus:ring-2 focus:ring-zinc-900 dark:focus:ring-zinc-100 outline-none transition-all pr-8"
                     />
                     {filterKeyword && (
                       <button 
                         onClick={() => setFilterKeyword('')}
-                        className="absolute right-2 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600"
+                        className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-colors"
                       >
                         <X className="w-4 h-4" />
                       </button>
