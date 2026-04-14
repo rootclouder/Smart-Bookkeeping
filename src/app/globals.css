@@ -12,9 +12,9 @@
 ::view-transition-new(root) {
   animation: none;
   mix-blend-mode: normal;
-  display: block;
 }
 
+/* Base states */
 ::view-transition-old(root) {
   z-index: 1;
 }
@@ -22,6 +22,8 @@
   z-index: 2147483646;
 }
 
+/* When switching TO dark mode:
+   The old view (light) stays on top and shrinks to reveal the new dark view beneath */
 .dark::view-transition-old(root) {
   z-index: 2147483646;
 }

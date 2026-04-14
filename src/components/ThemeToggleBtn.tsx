@@ -31,6 +31,12 @@ export function ThemeToggleBtn({ className = '' }: { className?: string }) {
     // @ts-ignore - View Transition API
     const transition = document.startViewTransition(() => {
       flushSync(() => {
+        // Also manually update the root class to prevent FOUC before React renders
+        if (targetTheme === 'dark') {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
         setTheme(targetTheme);
       });
     });
