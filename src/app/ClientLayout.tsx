@@ -4,7 +4,8 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useSession, signOut } from 'next-auth/react';
-import { LayoutDashboard, Wallet, Box, CreditCard, Plus, TrendingUp, BarChart3, Tag, User as UserIcon, LogOut } from 'lucide-react';
+import { useTheme } from 'next-themes';
+import { LayoutDashboard, Wallet, Box, CreditCard, Plus, TrendingUp, BarChart3, Tag, User as UserIcon, LogOut, Sun, Moon } from 'lucide-react';
 import { RecordModal } from '@/components/RecordModal';
 import { ProfileModal } from '@/components/ProfileModal';
 import { WelcomePage } from '@/components/WelcomePage';
@@ -14,11 +15,21 @@ import { useStore } from '@/store/useStore';
 export function ClientLayout({ children }: { children: React.ReactNode }) {
   const [isRecordModalOpen, setIsRecordModalOpen] = useState(false);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const pathname = usePathname();
   const { data: session, status } = useSession();
+  const { theme, setTheme } = useTheme();
   
   const isGuestMode = useStore((state) => state.isGuestMode);
   const setGuestMode = useStore((state) => state.setGuestMode);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const toggleTheme = () => {
+    setTheme(theme === 'dark' ? 'light' : 'dark');
+  };
 
   useEffect(() => {
     // Rehydrate state after auth resolves to prevent mismatch
@@ -83,6 +94,18 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
         
         {/* User Auth Section (Sidebar) */}
         <div className="p-4 border-t border-zinc-200 dark:border-zinc-800">
+          <div className="mb-4 flex items-center justify-between px-2 text-zinc-500 text-sm font-medium">
+            <span>主题模式</span>
+            {mounted && (
+              <button 
+                onClick={toggleTheme}
+                className="p-1.5 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
+                title="切换黑夜/白天模式"
+              >
+                {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+              </button>
+            )}
+          </div>
           {session?.user ? (
             <div className="flex items-center justify-between p-2 rounded-xl bg-zinc-50 dark:bg-zinc-800/50 group">
               <button 
@@ -135,7 +158,15 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
       <main className="flex-1 overflow-auto relative">
         <div className="md:hidden h-16 border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between px-4 bg-white dark:bg-zinc-900 font-semibold">
           智慧财务管理
-          <div className="flex items-center">
+          <div className="flex items-center space-x-3">
+            {mounted && (
+              <button 
+                onClick={toggleTheme}
+                className="p-1.5 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400"
+              >
+                {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+              </button>
+            )}
             {session?.user ? (
               <button onClick={() => signOut({ callbackUrl: '/' })}>
                 {session.user.image ? (
