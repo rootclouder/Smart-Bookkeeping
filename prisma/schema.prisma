@@ -65,6 +65,7 @@ model VerificationToken {
 model WechatLoginSession {
   id        String   @id @default(cuid())
   sceneId   String   @unique
+  code      String?  // 6位数验证码，用于订阅号登录
   ticket    String?
   status    String   @default("pending") // pending, scanned, expired
   openid    String?

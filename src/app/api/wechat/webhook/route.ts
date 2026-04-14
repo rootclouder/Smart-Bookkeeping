@@ -37,34 +37,59 @@ export async function POST(req: NextRequest) {
   let replyContent = '';
 
   try {
-    // 1. 处理扫码关注/登录事件
+    // 1. 处理扫码关注/登录事件（如果以后有了服务号也能兼容）
     if (MsgType === 'event' && (Event === 'subscribe' || Event === 'SCAN')) {
       let sceneId = EventKey || '';
       
-      // 如果是未关注用户扫码，EventKey 会带有 'qrscene_' 前缀
       if (Event === 'subscribe' && sceneId.startsWith('qrscene_')) {
         sceneId = sceneId.replace('qrscene_', '');
       }
 
       if (sceneId) {
-        // 更新扫码状态
         await prisma.wechatLoginSession.updateMany({
           where: { sceneId },
           data: { status: 'scanned', openid: FromUserName },
         });
 
-        // 自动注册/绑定用户
         await ensureUserExists(FromUserName);
         replyContent = '登录成功！您可以返回网页继续操作。您也可以直接发送“餐饮 50”格式的消息来记账。';
       } else if (Event === 'subscribe') {
-        replyContent = '欢迎关注智慧财务管理！您可以在网页端扫码登录，或直接回复格式如“餐饮 50”来记账。';
+        replyContent = '欢迎关注智慧财务管理！请回复网页上显示的 6 位验证码进行登录，或直接回复如“餐饮 50”来记账。';
       }
     }
 
-    // 2. 处理文本记账消息
+    // 2. 处理文本消息（验证码登录 或 记账）
     else if (MsgType === 'text' && Content) {
-      const user = await ensureUserExists(FromUserName);
-      const parseResult = parseBookkeepingMessage(Content.trim());
+      const textContent = Content.trim();
+      
+      // 检查是否为 6 位数字验证码
+      if (/^\d{6}$/.test(textContent)) {
+        // 查找对应的 pending 登录会话
+        const session = await prisma.wechatLoginSession.findFirst({
+          where: { 
+            code: textContent,
+            status: 'pending'
+          },
+          orderBy: { createdAt: 'desc' }
+        });
+
+        if (session) {
+          // 标记为已扫码，记录 openid
+          await prisma.wechatLoginSession.update({
+            where: { id: session.id },
+            data: { status: 'scanned', openid: FromUserName },
+          });
+
+          await ensureUserExists(FromUserName);
+          replyContent = '登录成功！网页端即将自动跳转。后续可直接在此发送如“餐饮 50”进行记账。';
+        } else {
+          replyContent = '验证码错误或已过期，请在网页端刷新二维码后重试。';
+        }
+      } 
+      // 不是验证码，则走记账逻辑
+      else {
+        const user = await ensureUserExists(FromUserName);
+        const parseResult = parseBookkeepingMessage(textContent);
       
       if (!parseResult) {
         replyContent = '未能识别记账格式。请尝试回复如：\n餐饮 50\n工资 5000 收入\n打车 20 备注信息';
@@ -104,6 +129,7 @@ export async function POST(req: NextRequest) {
           replyContent = `记账成功：${type === 'expense' ? '支出' : '收入'} ¥${amount} (${category})`;
         }
       }
+    }
     }
 
     // 如果没有生成回复内容，则回复空字符串（微信要求）

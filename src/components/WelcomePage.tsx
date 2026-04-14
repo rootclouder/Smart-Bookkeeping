@@ -12,6 +12,7 @@ export function WelcomePage() {
   const [showQR, setShowQR] = useState(false);
   const [qrUrl, setQrUrl] = useState('');
   const [sceneId, setSceneId] = useState('');
+  const [authCode, setAuthCode] = useState('');
   const [isLoadingQR, setIsLoadingQR] = useState(false);
 
   useEffect(() => {
@@ -39,9 +40,10 @@ export function WelcomePage() {
     try {
       const res = await fetch('/api/wechat/qrcode');
       const data = await res.json();
-      if (data.url) {
+      if (data.url && data.code) {
         setQrUrl(data.url);
         setSceneId(data.sceneId);
+        setAuthCode(data.code);
       } else {
         alert('无法获取二维码，请检查后端配置');
         setShowQR(false);
@@ -225,17 +227,17 @@ export function WelcomePage() {
               </div>
               
               <h3 className="text-2xl font-bold text-zinc-900 dark:text-white mb-2">
-                扫码关注并登录
+                扫码关注并发送验证码
               </h3>
-              <p className="text-sm text-zinc-500 mb-8">
-                请使用微信扫描下方二维码关注公众号<br/>关注后即可自动登录并开启微信记账
+              <p className="text-sm text-zinc-500 mb-6">
+                请使用微信扫描下方二维码关注公众号<br/>并在公众号内回复下方 6 位数字完成登录
               </p>
 
-              <div className="bg-zinc-100 dark:bg-zinc-800 rounded-2xl aspect-square flex items-center justify-center overflow-hidden border border-zinc-200 dark:border-zinc-700 relative">
+              <div className="bg-zinc-100 dark:bg-zinc-800 rounded-2xl aspect-square flex items-center justify-center overflow-hidden border border-zinc-200 dark:border-zinc-700 relative mb-6">
                 {isLoadingQR ? (
                   <div className="flex flex-col items-center text-zinc-400">
                     <Loader2 className="w-8 h-8 animate-spin mb-2" />
-                    <span className="text-sm">正在生成专属二维码...</span>
+                    <span className="text-sm">正在加载二维码...</span>
                   </div>
                 ) : (
                   qrUrl && (
@@ -247,6 +249,15 @@ export function WelcomePage() {
                   )
                 )}
               </div>
+              
+              {!isLoadingQR && authCode && (
+                <div className="bg-zinc-100 dark:bg-zinc-800/50 rounded-xl p-4 border border-zinc-200 dark:border-zinc-700">
+                  <div className="text-xs text-zinc-500 mb-1">您的专属验证码</div>
+                  <div className="text-3xl font-mono font-bold tracking-[0.25em] text-[#07C160]">
+                    {authCode}
+                  </div>
+                </div>
+              )}
               
               <p className="text-xs text-zinc-400 mt-6 flex items-center justify-center">
                 <ShieldCheck className="w-4 h-4 mr-1" />
