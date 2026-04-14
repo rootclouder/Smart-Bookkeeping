@@ -48,14 +48,12 @@ export function ThemeToggleBtn({ className = '' }: { className?: string }) {
       ];
       document.documentElement.animate(
         {
-          clipPath: targetTheme === 'dark' ? [...clipPath].reverse() : clipPath,
+          clipPath: clipPath,
         },
         {
-          duration: 400,
-          easing: 'ease-in-out',
-          pseudoElement: targetTheme === 'dark' 
-            ? '::view-transition-old(root)' 
-            : '::view-transition-new(root)',
+          duration: 500,
+          easing: 'ease-out',
+          pseudoElement: '::view-transition-new(root)',
         }
       );
     });

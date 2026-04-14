@@ -64,9 +64,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
       {/* Sidebar */}
       <aside className="w-64 border-r border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hidden md:flex flex-col">
         <div className="h-16 flex items-center px-6 font-semibold text-lg tracking-tight">
-          <div className="w-8 h-8 rounded-lg bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 flex items-center justify-center mr-3">
-            ¥
-          </div>
+          <img src="/icon.svg" alt="Logo" className="w-8 h-8 rounded-lg mr-3 shadow-sm" />
           个人财务可视化中心
         </div>
         <nav className="flex-1 py-4 px-3 space-y-1">
@@ -150,7 +148,10 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
       {/* Main Content */}
       <main className="flex-1 overflow-auto relative">
         <div className="md:hidden h-16 border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between px-4 bg-white dark:bg-zinc-900 font-semibold">
-          个人财务可视化中心
+          <div className="flex items-center">
+            <img src="/icon.svg" alt="Logo" className="w-8 h-8 rounded-lg mr-3 shadow-sm" />
+            个人财务可视化中心
+          </div>
           <div className="flex items-center space-x-3">
             {mounted && (
               <ThemeToggleBtn className="scale-75" />

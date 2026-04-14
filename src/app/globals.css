@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  background-color: #ffffff;
+}
+html.dark {
+  background-color: #09090b;
+}
+
 @layer base {
   *, ::before, ::after {
     /* Only transition outline, box-shadow by default to let view-transition handle bg/colors */
@@ -19,16 +26,7 @@
   z-index: 1;
 }
 ::view-transition-new(root) {
-  z-index: 2147483646;
-}
-
-/* When switching TO dark mode:
-   The old view (light) stays on top and shrinks to reveal the new dark view beneath */
-.dark::view-transition-old(root) {
-  z-index: 2147483646;
-}
-.dark::view-transition-new(root) {
-  z-index: 1;
+  z-index: 9999;
 }
 
 @layer utilities {
