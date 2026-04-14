@@ -165,11 +165,16 @@ interface AppState {
   addCategory: (category: Omit<Category, 'id'>) => void;
   updateCategory: (id: string, category: Partial<Category>) => void;
   deleteCategory: (id: string) => void;
+
+  isGuestMode: boolean;
+  setGuestMode: (isGuestMode: boolean) => void;
 }
 
 export const useStore = create<AppState>()(
   persist(
     (set) => ({
+      isGuestMode: false,
+      setGuestMode: (isGuestMode) => set({ isGuestMode }),
       accounts: [
         { id: '1', name: '现金钱包', type: 'cash', balance: 0 },
       ],

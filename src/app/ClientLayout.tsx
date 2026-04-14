@@ -6,15 +6,17 @@ import { usePathname } from 'next/navigation';
 import { useSession, signOut } from 'next-auth/react';
 import { LayoutDashboard, Wallet, Box, CreditCard, Plus, TrendingUp, BarChart3, Tag, User as UserIcon, LogOut } from 'lucide-react';
 import { RecordModal } from '@/components/RecordModal';
-import { LoginModal } from '@/components/LoginModal';
+import { WelcomePage } from '@/components/WelcomePage';
 import { cn } from '@/lib/utils';
 import { useStore } from '@/store/useStore';
 
 export function ClientLayout({ children }: { children: React.ReactNode }) {
   const [isRecordModalOpen, setIsRecordModalOpen] = useState(false);
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const pathname = usePathname();
   const { data: session, status } = useSession();
+  
+  const isGuestMode = useStore((state) => state.isGuestMode);
+  const setGuestMode = useStore((state) => state.setGuestMode);
 
   useEffect(() => {
     // Rehydrate state after auth resolves to prevent mismatch
@@ -32,6 +34,18 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
     { to: '/items', icon: Box, label: '物品管理' },
     { to: '/debts', icon: CreditCard, label: '负债管理' },
   ];
+
+  if (status === 'loading') {
+    return (
+      <div className="flex h-screen items-center justify-center bg-zinc-50 dark:bg-zinc-950">
+        <div className="w-8 h-8 rounded-full border-4 border-zinc-200 dark:border-zinc-800 border-t-zinc-900 dark:border-t-zinc-100 animate-spin"></div>
+      </div>
+    );
+  }
+
+  if (status === 'unauthenticated' && !isGuestMode) {
+    return <WelcomePage />;
+  }
 
   return (
     <div className="flex h-screen bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100">
@@ -67,9 +81,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
         
         {/* User Auth Section (Sidebar) */}
         <div className="p-4 border-t border-zinc-200 dark:border-zinc-800">
-          {status === 'loading' ? (
-            <div className="animate-pulse h-10 bg-zinc-100 dark:bg-zinc-800 rounded-xl"></div>
-          ) : session?.user ? (
+          {session?.user ? (
             <div className="flex items-center justify-between p-2 rounded-xl bg-zinc-50 dark:bg-zinc-800/50">
               <div className="flex items-center overflow-hidden">
                 {session.user.image ? (
@@ -92,12 +104,23 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
               </button>
             </div>
           ) : (
-            <button
-              onClick={() => setIsLoginModalOpen(true)}
-              className="w-full flex items-center justify-center px-4 py-2.5 bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 rounded-xl font-medium text-sm transition-transform active:scale-[0.98]"
-            >
-              登录 / 游客
-            </button>
+            <div className="flex items-center justify-between p-2 rounded-xl bg-zinc-50 dark:bg-zinc-800/50">
+              <div className="flex items-center overflow-hidden">
+                <div className="w-8 h-8 rounded-full bg-zinc-200 dark:bg-zinc-700 flex items-center justify-center shrink-0">
+                  <UserIcon className="w-4 h-4 text-zinc-500" />
+                </div>
+                <span className="ml-3 text-sm font-medium truncate pr-2 text-zinc-500">
+                  在线体验
+                </span>
+              </div>
+              <button 
+                onClick={() => setGuestMode(false)}
+                className="p-2 text-zinc-400 hover:text-emerald-500 transition-colors shrink-0"
+                title="返回登录页"
+              >
+                <LogOut className="w-4 h-4" />
+              </button>
+            </div>
           )}
         </div>
       </aside>
@@ -107,9 +130,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
         <div className="md:hidden h-16 border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between px-4 bg-white dark:bg-zinc-900 font-semibold">
           智慧财务管理
           <div className="flex items-center">
-            {status === 'loading' ? (
-              <div className="w-8 h-8 rounded-full bg-zinc-200 animate-pulse"></div>
-            ) : session?.user ? (
+            {session?.user ? (
               <button onClick={() => signOut({ callbackUrl: '/' })}>
                 {session.user.image ? (
                   <img src={session.user.image} alt="Avatar" className="w-8 h-8 rounded-full" />
@@ -121,10 +142,10 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
               </button>
             ) : (
               <button 
-                onClick={() => setIsLoginModalOpen(true)}
-                className="text-xs px-3 py-1.5 bg-zinc-100 dark:bg-zinc-800 rounded-lg"
+                onClick={() => setGuestMode(false)}
+                className="text-xs px-3 py-1.5 bg-zinc-100 dark:bg-zinc-800 rounded-lg text-zinc-500 hover:text-zinc-900 transition-colors"
               >
-                登录
+                在线体验
               </button>
             )}
           </div>
@@ -170,12 +191,6 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
       <RecordModal
         isOpen={isRecordModalOpen}
         onClose={() => setIsRecordModalOpen(false)}
-      />
-
-      {/* Login Modal */}
-      <LoginModal
-        isOpen={isLoginModalOpen}
-        onClose={() => setIsLoginModalOpen(false)}
       />
     </div>
   );
