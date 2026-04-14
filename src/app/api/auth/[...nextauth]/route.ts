@@ -43,18 +43,22 @@ export const authOptions: NextAuthOptions = {
     strategy: "jwt",
   },
   callbacks: {
-    async session({ session, token }) {
-      if (session?.user && token.sub) {
-        // @ts-ignore
-        session.user.id = token.sub;
-      }
-      return session;
-    },
     async jwt({ token, user }) {
       if (user) {
         token.sub = user.id;
+        token.name = user.name;
+        token.image = user.image;
       }
       return token;
+    },
+    async session({ session, token }) {
+      if (session?.user && token) {
+        // @ts-ignore
+        session.user.id = token.sub;
+        session.user.name = token.name as string | null | undefined;
+        session.user.image = token.image as string | null | undefined;
+      }
+      return session;
     },
   },
   pages: {
