@@ -175,11 +175,14 @@ export function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
                   <button 
                     type="button"
                     onClick={() => fileInputRef.current?.click()}
-                    className="px-4 py-2.5 bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700 rounded-xl text-sm font-medium hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors"
+                    className="px-4 py-2.5 bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700 rounded-xl text-sm font-medium hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors shrink-0"
                   >
-                    本地上传
+                    上传
                   </button>
                 </div>
+                <p className="mt-2 text-xs text-zinc-500">
+                  支持网络链接或本地上传。图片大小不得超过 2M。
+                </p>
               </div>
 
               <button
