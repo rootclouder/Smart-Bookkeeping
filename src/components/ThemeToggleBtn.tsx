@@ -4,6 +4,7 @@ import { useTheme } from 'next-themes';
 import { Sun, Moon } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
+import { flushSync } from 'react-dom';
 
 export function ThemeToggleBtn({ className = '' }: { className?: string }) {
   const { resolvedTheme, setTheme } = useTheme();
@@ -28,18 +29,10 @@ export function ThemeToggleBtn({ className = '' }: { className?: string }) {
     );
 
     // @ts-ignore - View Transition API
-    const transition = document.startViewTransition(async () => {
-      // Force a synchronous DOM update for the View Transition API to capture
-      if (targetTheme === 'dark') {
-        document.documentElement.classList.add('dark');
-        document.documentElement.style.colorScheme = 'dark';
-      } else {
-        document.documentElement.classList.remove('dark');
-        document.documentElement.style.colorScheme = 'light';
-      }
-      
-      // Update React state via next-themes
-      setTheme(targetTheme);
+    const transition = document.startViewTransition(() => {
+      flushSync(() => {
+        setTheme(targetTheme);
+      });
     });
 
     transition.ready.then(() => {
@@ -49,14 +42,14 @@ export function ThemeToggleBtn({ className = '' }: { className?: string }) {
       ];
       document.documentElement.animate(
         {
-          clipPath: targetTheme === 'dark' ? clipPath : [...clipPath].reverse(),
+          clipPath: targetTheme === 'dark' ? [...clipPath].reverse() : clipPath,
         },
         {
-          duration: 700,
+          duration: 400,
           easing: 'ease-in-out',
           pseudoElement: targetTheme === 'dark' 
-            ? '::view-transition-new(root)' 
-            : '::view-transition-old(root)',
+            ? '::view-transition-old(root)' 
+            : '::view-transition-new(root)',
         }
       );
     });
