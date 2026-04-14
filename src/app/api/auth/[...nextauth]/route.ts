@@ -11,6 +11,7 @@ export const authOptions: NextAuthOptions = {
       type: "oauth",
       clientId: process.env.WECHAT_APP_ID || "MOCK_WECHAT_APP_ID",
       clientSecret: process.env.WECHAT_APP_SECRET || "MOCK_WECHAT_APP_SECRET",
+      checks: ["state"], // Explicitly set checks to include only state
       authorization: {
         url: "https://open.weixin.qq.com/connect/qrconnect",
         params: {
@@ -21,9 +22,9 @@ export const authOptions: NextAuthOptions = {
       },
       token: {
         url: "https://api.weixin.qq.com/sns/oauth2/access_token",
-        async request({ params }) {
+        async request({ params, client, provider }) {
           const response = await fetch(
-            `https://api.weixin.qq.com/sns/oauth2/access_token?appid=${process.env.WECHAT_APP_ID}&secret=${process.env.WECHAT_APP_SECRET}&code=${params.code}&grant_type=authorization_code`
+            `https://api.weixin.qq.com/sns/oauth2/access_token?appid=${provider.clientId}&secret=${provider.clientSecret}&code=${params.code}&grant_type=authorization_code`
           );
           const tokens = await response.json();
           return { tokens };
