@@ -242,9 +242,9 @@ export default function Home() {
         {/* Monthly Summary */}
         <div className="lg:col-span-1 space-y-6">
           <motion.div 
-            whileHover={{ y: -4, scale: 1.01 }}
-            transition={{ type: "spring", stiffness: 300, damping: 20 }}
-            className="bg-zinc-900 text-white p-6 rounded-3xl shadow-xl hover:shadow-2xl hover:shadow-zinc-900/20 transition-all duration-300"
+            whileHover={{ y: -6, scale: 1.02 }}
+            transition={{ type: "spring", stiffness: 400, damping: 17 }}
+            className="bg-zinc-900 text-white p-6 rounded-3xl shadow-xl hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.5)] dark:hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.8)] transition-all duration-300 ring-1 ring-white/10"
           >
             <h3 className="font-medium mb-6 text-white">本月概况</h3>
             <div className="space-y-4">
@@ -268,21 +268,23 @@ export default function Home() {
         {/* Calendar View */}
         <motion.div 
           whileHover={{ y: -4, scale: 1.01 }}
-          transition={{ type: "spring", stiffness: 300, damping: 20 }}
-          className="lg:col-span-2 bg-white/60 dark:bg-zinc-900/60 backdrop-blur-xl p-6 rounded-3xl shadow-sm hover:shadow-lg border border-white/20 dark:border-white/10 transition-all duration-300"
+          transition={{ type: "spring", stiffness: 400, damping: 17 }}
+          className="lg:col-span-2 bg-white/60 dark:bg-zinc-900/60 backdrop-blur-xl p-6 rounded-3xl shadow-sm hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] dark:hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.5)] border border-white/20 dark:border-white/10 transition-all duration-300 relative group overflow-hidden"
         >
+          {/* subtle glow effect on hover */}
+          <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-transparent to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
           <div className="flex items-center justify-between mb-6">
             <h3 className="font-semibold text-lg">{format(currentDate, 'yyyy年 MM月')}</h3>
             <div className="flex space-x-2">
               <button
                 onClick={() => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1))}
-                className="p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+                className="p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors active:scale-95"
               >
                 上月
               </button>
               <button
                 onClick={() => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1))}
-                className="p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+                className="p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors active:scale-95"
               >
                 下月
               </button>
@@ -308,18 +310,19 @@ export default function Home() {
               const hasDebtDue = debts.some((d) => d.dueDate === dayStr || (d.isInstallment && d.dueDate.endsWith(format(day, '-dd'))));
 
               return (
-                <div
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
                   key={day.toISOString()}
                   className={cn(
-                    'aspect-square rounded-xl p-1 md:p-2 border flex flex-col items-center transition-all hover:border-zinc-300 dark:hover:border-zinc-600',
+                    'aspect-square rounded-xl p-1 md:p-2 border flex flex-col items-center transition-colors hover:border-blue-400 dark:hover:border-blue-500 hover:shadow-md dark:hover:shadow-blue-900/20 cursor-default',
                     isSameDay(day, new Date()) 
-                      ? 'border-zinc-900 dark:border-zinc-100 bg-zinc-50 dark:bg-zinc-800/50' 
+                      ? 'border-blue-500 dark:border-blue-400 bg-blue-50/50 dark:bg-blue-500/10' 
                       : 'border-zinc-100 dark:border-zinc-800'
                   )}
                 >
                   <span className={cn(
                     'text-xs md:text-sm font-medium mb-1',
-                    isSameDay(day, new Date()) ? 'text-zinc-900 dark:text-white' : 'text-zinc-600 dark:text-zinc-400'
+                    isSameDay(day, new Date()) ? 'text-blue-600 dark:text-blue-400' : 'text-zinc-600 dark:text-zinc-400'
                   )}>
                     {format(day, 'd')}
                   </span>
@@ -329,7 +332,7 @@ export default function Home() {
                     {hasExpense && <div className="w-1.5 h-1.5 rounded-full bg-rose-400" />}
                     {hasDebtDue && <div className="w-1.5 h-1.5 rounded-full bg-amber-400" />}
                   </div>
-                </div>
+                </motion.div>
               );
             })}
           </div>
