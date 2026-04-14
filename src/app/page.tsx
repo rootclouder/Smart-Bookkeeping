@@ -83,11 +83,13 @@ export default function Home() {
       {/* Dashboard Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
         <motion.div
+          whileHover={{ y: -4, scale: 1.01 }}
+          transition={{ type: "spring", stiffness: 300, damping: 20 }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white/60 dark:bg-zinc-900/60 backdrop-blur-xl p-6 rounded-3xl shadow-sm border border-white/20 dark:border-white/10 relative overflow-hidden group"
+          className="bg-white/60 dark:bg-zinc-900/60 backdrop-blur-xl p-6 rounded-3xl shadow-sm hover:shadow-lg border border-white/20 dark:border-white/10 hover:border-indigo-500/30 dark:hover:border-indigo-400/30 relative overflow-hidden group transition-all duration-300"
         >
-          <div className="absolute -right-4 -top-4 w-20 h-20 bg-indigo-500/10 rounded-full blur-2xl group-hover:bg-indigo-500/20 transition-colors" />
+          <div className="absolute -right-4 -top-4 w-20 h-20 bg-indigo-500/10 rounded-full blur-2xl group-hover:bg-indigo-500/30 transition-colors duration-500" />
           <div className="flex items-center space-x-3 mb-4">
             <div className="w-10 h-10 rounded-xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center text-zinc-900 dark:text-white">
               <Wallet className="w-5 h-5" />
@@ -98,12 +100,13 @@ export default function Home() {
         </motion.div>
         
         <motion.div
+          whileHover={{ y: -4, scale: 1.01 }}
+          transition={{ type: "spring", stiffness: 300, damping: 20, delay: 0.1 }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="bg-white/60 dark:bg-zinc-900/60 backdrop-blur-xl p-6 rounded-3xl shadow-sm border border-white/20 dark:border-white/10 relative overflow-hidden group"
+          className="bg-white/60 dark:bg-zinc-900/60 backdrop-blur-xl p-6 rounded-3xl shadow-sm hover:shadow-lg border border-white/20 dark:border-white/10 hover:border-emerald-500/30 dark:hover:border-emerald-400/30 relative overflow-hidden group transition-all duration-300"
         >
-          <div className="absolute -right-4 -top-4 w-20 h-20 bg-emerald-500/10 rounded-full blur-2xl group-hover:bg-emerald-500/20 transition-colors" />
+          <div className="absolute -right-4 -top-4 w-20 h-20 bg-emerald-500/10 rounded-full blur-2xl group-hover:bg-emerald-500/30 transition-colors duration-500" />
           <div className="flex items-center space-x-3 mb-4">
             <div className="w-10 h-10 rounded-xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center text-zinc-900 dark:text-white">
               <Box className="w-5 h-5" />
@@ -114,12 +117,13 @@ export default function Home() {
         </motion.div>
 
         <motion.div
+          whileHover={{ y: -4, scale: 1.01 }}
+          transition={{ type: "spring", stiffness: 300, damping: 20, delay: 0.2 }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="bg-white/60 dark:bg-zinc-900/60 backdrop-blur-xl p-6 rounded-3xl shadow-sm border border-white/20 dark:border-white/10 relative overflow-hidden group"
+          className="bg-white/60 dark:bg-zinc-900/60 backdrop-blur-xl p-6 rounded-3xl shadow-sm hover:shadow-lg border border-white/20 dark:border-white/10 hover:border-rose-500/30 dark:hover:border-rose-400/30 relative overflow-hidden group transition-all duration-300"
         >
-          <div className="absolute -right-4 -top-4 w-20 h-20 bg-rose-500/10 rounded-full blur-2xl group-hover:bg-rose-500/20 transition-colors" />
+          <div className="absolute -right-4 -top-4 w-20 h-20 bg-rose-500/10 rounded-full blur-2xl group-hover:bg-rose-500/30 transition-colors duration-500" />
           <div className="flex items-center space-x-3 mb-4">
             <div className="w-10 h-10 rounded-xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center text-zinc-900 dark:text-white">
               <AlertCircle className="w-5 h-5 text-rose-500" />
@@ -130,12 +134,13 @@ export default function Home() {
         </motion.div>
 
         <motion.div
+          whileHover={{ y: -4, scale: 1.01 }}
+          transition={{ type: "spring", stiffness: 300, damping: 20, delay: 0.3 }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className="bg-white/60 dark:bg-zinc-900/60 backdrop-blur-xl p-6 rounded-3xl shadow-sm border border-white/20 dark:border-white/10 relative overflow-hidden group"
+          className="bg-white/60 dark:bg-zinc-900/60 backdrop-blur-xl p-6 rounded-3xl shadow-sm hover:shadow-lg border border-white/20 dark:border-white/10 hover:border-amber-500/30 dark:hover:border-amber-400/30 relative overflow-hidden group transition-all duration-300"
         >
-          <div className="absolute -right-4 -top-4 w-20 h-20 bg-amber-500/10 rounded-full blur-2xl group-hover:bg-amber-500/20 transition-colors" />
+          <div className="absolute -right-4 -top-4 w-20 h-20 bg-amber-500/10 rounded-full blur-2xl group-hover:bg-amber-500/30 transition-colors duration-500" />
           <div className="flex items-center space-x-3 mb-4">
             <div className="w-10 h-10 rounded-xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center text-zinc-900 dark:text-white">
               <CreditCard className="w-5 h-5 text-amber-500" />
@@ -151,10 +156,11 @@ export default function Home() {
         <h2 className="text-xl font-bold tracking-tight mb-4">理财概况</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
           <motion.div
+            whileHover={{ y: -4, scale: 1.01 }}
+            transition={{ type: "spring", stiffness: 300, damping: 20, delay: 0.4 }}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-            className="bg-white/60 dark:bg-zinc-900/60 backdrop-blur-xl p-6 rounded-3xl shadow-sm border border-white/20 dark:border-white/10 flex flex-col justify-between"
+            className="bg-white/60 dark:bg-zinc-900/60 backdrop-blur-xl p-6 rounded-3xl shadow-sm hover:shadow-lg border border-white/20 dark:border-white/10 hover:border-blue-500/30 dark:hover:border-blue-400/30 flex flex-col justify-between transition-all duration-300"
           >
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center space-x-3">
@@ -177,10 +183,11 @@ export default function Home() {
           </motion.div>
 
           <motion.div
+            whileHover={{ y: -4, scale: 1.01 }}
+            transition={{ type: "spring", stiffness: 300, damping: 20, delay: 0.5 }}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
-            className="bg-white/60 dark:bg-zinc-900/60 backdrop-blur-xl p-6 rounded-3xl shadow-sm border border-white/20 dark:border-white/10 flex flex-col justify-between"
+            className="bg-white/60 dark:bg-zinc-900/60 backdrop-blur-xl p-6 rounded-3xl shadow-sm hover:shadow-lg border border-white/20 dark:border-white/10 hover:border-amber-500/30 dark:hover:border-amber-400/30 flex flex-col justify-between transition-all duration-300"
           >
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center space-x-3">
@@ -203,10 +210,11 @@ export default function Home() {
           </motion.div>
 
           <motion.div
+            whileHover={{ y: -4, scale: 1.01 }}
+            transition={{ type: "spring", stiffness: 300, damping: 20, delay: 0.6 }}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
-            className="bg-white/60 dark:bg-zinc-900/60 backdrop-blur-xl p-6 rounded-3xl shadow-sm border border-white/20 dark:border-white/10 flex flex-col justify-between"
+            className="bg-white/60 dark:bg-zinc-900/60 backdrop-blur-xl p-6 rounded-3xl shadow-sm hover:shadow-lg border border-white/20 dark:border-white/10 hover:border-purple-500/30 dark:hover:border-purple-400/30 flex flex-col justify-between transition-all duration-300"
           >
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center space-x-3">
@@ -233,7 +241,11 @@ export default function Home() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Monthly Summary */}
         <div className="lg:col-span-1 space-y-6">
-          <div className="bg-zinc-900 text-white p-6 rounded-3xl shadow-xl">
+          <motion.div 
+            whileHover={{ y: -4, scale: 1.01 }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            className="bg-zinc-900 text-white p-6 rounded-3xl shadow-xl hover:shadow-2xl hover:shadow-zinc-900/20 transition-all duration-300"
+          >
             <h3 className="font-medium mb-6 text-white">本月概况</h3>
             <div className="space-y-4">
               <div>
@@ -250,11 +262,15 @@ export default function Home() {
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
 
         {/* Calendar View */}
-        <div className="lg:col-span-2 bg-white/60 dark:bg-zinc-900/60 backdrop-blur-xl p-6 rounded-3xl shadow-sm border border-white/20 dark:border-white/10">
+        <motion.div 
+          whileHover={{ y: -4, scale: 1.01 }}
+          transition={{ type: "spring", stiffness: 300, damping: 20 }}
+          className="lg:col-span-2 bg-white/60 dark:bg-zinc-900/60 backdrop-blur-xl p-6 rounded-3xl shadow-sm hover:shadow-lg border border-white/20 dark:border-white/10 transition-all duration-300"
+        >
           <div className="flex items-center justify-between mb-6">
             <h3 className="font-semibold text-lg">{format(currentDate, 'yyyy年 MM月')}</h3>
             <div className="flex space-x-2">
@@ -323,7 +339,7 @@ export default function Home() {
             <div className="flex items-center space-x-1.5"><div className="w-2 h-2 rounded-full bg-rose-400" /><span>有支出</span></div>
             <div className="flex items-center space-x-1.5"><div className="w-2 h-2 rounded-full bg-amber-400" /><span>待还款</span></div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </div>
   );
