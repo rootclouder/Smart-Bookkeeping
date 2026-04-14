@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, User as UserIcon, Loader2, Save } from 'lucide-react';
+import { X, User as UserIcon, Loader2, Save, UploadCloud } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 
 interface ProfileModalProps {
@@ -17,6 +17,7 @@ export function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
   const [image, setImage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // 初始化表单数据
   useEffect(() => {
@@ -25,6 +26,28 @@ export function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
       setImage(session.user.image || '');
     }
   }, [session, isOpen]);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      setError('请选择一个有效的图片文件');
+      return;
+    }
+
+    if (file.size > 2 * 1024 * 1024) {
+      setError('图片大小不能超过 2MB');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setImage(reader.result as string);
+      setError('');
+    };
+    reader.readAsDataURL(file);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -88,12 +111,20 @@ export function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
             </button>
 
             <div className="text-center mb-6">
-              <div className="w-20 h-20 bg-zinc-100 dark:bg-zinc-800 rounded-full flex items-center justify-center mx-auto mb-4 overflow-hidden border-2 border-white dark:border-zinc-700 shadow-md">
+              <div 
+                className="w-20 h-20 bg-zinc-100 dark:bg-zinc-800 rounded-full flex items-center justify-center mx-auto mb-4 overflow-hidden border-2 border-white dark:border-zinc-700 shadow-md relative group cursor-pointer"
+                onClick={() => fileInputRef.current?.click()}
+              >
                 {image ? (
                   <img src={image} alt="Avatar Preview" className="w-full h-full object-cover" />
                 ) : (
                   <UserIcon className="w-8 h-8 text-zinc-400" />
                 )}
+                
+                {/* 悬浮上传蒙层 */}
+                <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                  <UploadCloud className="w-6 h-6 text-white mb-1" />
+                </div>
               </div>
               <h3 className="text-xl font-bold text-zinc-900 dark:text-white">
                 个人资料设置
@@ -101,6 +132,13 @@ export function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-5">
+              <input 
+                type="file" 
+                ref={fileInputRef} 
+                onChange={handleFileChange} 
+                accept="image/png, image/jpeg, image/gif, image/webp"
+                className="hidden" 
+              />
               {error && (
                 <div className="p-3 bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 text-sm rounded-xl">
                   {error}
@@ -124,18 +162,24 @@ export function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
 
               <div>
                 <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1.5">
-                  头像链接 (URL)
+                  头像链接 (可选)
                 </label>
-                <input
-                  type="url"
-                  value={image}
-                  onChange={(e) => setImage(e.target.value)}
-                  className="w-full px-4 py-2.5 bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#07C160] transition-shadow text-sm"
-                  placeholder="https://example.com/avatar.png"
-                />
-                <p className="mt-1.5 text-xs text-zinc-500">
-                  可填入任何可公开访问的图片链接，留空则显示默认头像。
-                </p>
+                <div className="flex space-x-2">
+                  <input
+                    type="url"
+                    value={image.startsWith('data:') ? '' : image}
+                    onChange={(e) => setImage(e.target.value)}
+                    className="flex-1 px-4 py-2.5 bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-xl text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#07C160] transition-shadow text-sm"
+                    placeholder="或填入网络图片链接"
+                  />
+                  <button 
+                    type="button"
+                    onClick={() => fileInputRef.current?.click()}
+                    className="px-4 py-2.5 bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700 rounded-xl text-sm font-medium hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors"
+                  >
+                    本地上传
+                  </button>
+                </div>
               </div>
 
               <button
