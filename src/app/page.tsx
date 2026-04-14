@@ -83,11 +83,11 @@ export default function Home() {
       {/* Dashboard Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
         <motion.div
-          whileHover={{ y: -4, scale: 1.01 }}
+          whileHover={{ y: -4, scale: 1.01, transition: { type: "spring", stiffness: 400, damping: 17 } }}
           transition={{ type: "spring", stiffness: 300, damping: 20 }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white/60 dark:bg-zinc-900/60 backdrop-blur-xl p-6 rounded-3xl shadow-sm hover:shadow-lg border border-white/20 dark:border-white/10 hover:border-indigo-500/30 dark:hover:border-indigo-400/30 relative overflow-hidden group transition-all duration-300"
+          className="bg-white/60 dark:bg-zinc-900/60 backdrop-blur-xl p-6 rounded-3xl shadow-sm hover:shadow-lg border border-white/20 dark:border-white/10 hover:border-indigo-500/30 dark:hover:border-indigo-400/30 relative overflow-hidden group"
         >
           <div className="absolute -right-4 -top-4 w-20 h-20 bg-indigo-500/10 rounded-full blur-2xl group-hover:bg-indigo-500/30 transition-colors duration-500" />
           <div className="flex items-center space-x-3 mb-4">
@@ -100,11 +100,11 @@ export default function Home() {
         </motion.div>
         
         <motion.div
-          whileHover={{ y: -4, scale: 1.01 }}
+          whileHover={{ y: -4, scale: 1.01, transition: { type: "spring", stiffness: 400, damping: 17 } }}
           transition={{ type: "spring", stiffness: 300, damping: 20, delay: 0.1 }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white/60 dark:bg-zinc-900/60 backdrop-blur-xl p-6 rounded-3xl shadow-sm hover:shadow-lg border border-white/20 dark:border-white/10 hover:border-emerald-500/30 dark:hover:border-emerald-400/30 relative overflow-hidden group transition-all duration-300"
+          className="bg-white/60 dark:bg-zinc-900/60 backdrop-blur-xl p-6 rounded-3xl shadow-sm hover:shadow-lg border border-white/20 dark:border-white/10 hover:border-emerald-500/30 dark:hover:border-emerald-400/30 relative overflow-hidden group"
         >
           <div className="absolute -right-4 -top-4 w-20 h-20 bg-emerald-500/10 rounded-full blur-2xl group-hover:bg-emerald-500/30 transition-colors duration-500" />
           <div className="flex items-center space-x-3 mb-4">
@@ -117,11 +117,11 @@ export default function Home() {
         </motion.div>
 
         <motion.div
-          whileHover={{ y: -4, scale: 1.01 }}
+          whileHover={{ y: -4, scale: 1.01, transition: { type: "spring", stiffness: 400, damping: 17 } }}
           transition={{ type: "spring", stiffness: 300, damping: 20, delay: 0.2 }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white/60 dark:bg-zinc-900/60 backdrop-blur-xl p-6 rounded-3xl shadow-sm hover:shadow-lg border border-white/20 dark:border-white/10 hover:border-rose-500/30 dark:hover:border-rose-400/30 relative overflow-hidden group transition-all duration-300"
+          className="bg-white/60 dark:bg-zinc-900/60 backdrop-blur-xl p-6 rounded-3xl shadow-sm hover:shadow-lg border border-white/20 dark:border-white/10 hover:border-rose-500/30 dark:hover:border-rose-400/30 relative overflow-hidden group"
         >
           <div className="absolute -right-4 -top-4 w-20 h-20 bg-rose-500/10 rounded-full blur-2xl group-hover:bg-rose-500/30 transition-colors duration-500" />
           <div className="flex items-center space-x-3 mb-4">
@@ -134,11 +134,11 @@ export default function Home() {
         </motion.div>
 
         <motion.div
-          whileHover={{ y: -4, scale: 1.01 }}
+          whileHover={{ y: -4, scale: 1.01, transition: { type: "spring", stiffness: 400, damping: 17 } }}
           transition={{ type: "spring", stiffness: 300, damping: 20, delay: 0.3 }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white/60 dark:bg-zinc-900/60 backdrop-blur-xl p-6 rounded-3xl shadow-sm hover:shadow-lg border border-white/20 dark:border-white/10 hover:border-amber-500/30 dark:hover:border-amber-400/30 relative overflow-hidden group transition-all duration-300"
+          className="bg-white/60 dark:bg-zinc-900/60 backdrop-blur-xl p-6 rounded-3xl shadow-sm hover:shadow-lg border border-white/20 dark:border-white/10 hover:border-amber-500/30 dark:hover:border-amber-400/30 relative overflow-hidden group"
         >
           <div className="absolute -right-4 -top-4 w-20 h-20 bg-amber-500/10 rounded-full blur-2xl group-hover:bg-amber-500/30 transition-colors duration-500" />
           <div className="flex items-center space-x-3 mb-4">
@@ -156,11 +156,11 @@ export default function Home() {
         <h2 className="text-xl font-bold tracking-tight mb-4">理财概况</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
           <motion.div
-            whileHover={{ y: -4, scale: 1.01 }}
+            whileHover={{ y: -4, scale: 1.01, transition: { type: "spring", stiffness: 400, damping: 17 } }}
             transition={{ type: "spring", stiffness: 300, damping: 20, delay: 0.4 }}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-white/60 dark:bg-zinc-900/60 backdrop-blur-xl p-6 rounded-3xl shadow-sm hover:shadow-lg border border-white/20 dark:border-white/10 hover:border-blue-500/30 dark:hover:border-blue-400/30 flex flex-col justify-between transition-all duration-300"
+            className="bg-white/60 dark:bg-zinc-900/60 backdrop-blur-xl p-6 rounded-3xl shadow-sm hover:shadow-lg border border-white/20 dark:border-white/10 hover:border-blue-500/30 dark:hover:border-blue-400/30 flex flex-col justify-between"
           >
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center space-x-3">
@@ -183,11 +183,11 @@ export default function Home() {
           </motion.div>
 
           <motion.div
-            whileHover={{ y: -4, scale: 1.01 }}
+            whileHover={{ y: -4, scale: 1.01, transition: { type: "spring", stiffness: 400, damping: 17 } }}
             transition={{ type: "spring", stiffness: 300, damping: 20, delay: 0.5 }}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-white/60 dark:bg-zinc-900/60 backdrop-blur-xl p-6 rounded-3xl shadow-sm hover:shadow-lg border border-white/20 dark:border-white/10 hover:border-amber-500/30 dark:hover:border-amber-400/30 flex flex-col justify-between transition-all duration-300"
+            className="bg-white/60 dark:bg-zinc-900/60 backdrop-blur-xl p-6 rounded-3xl shadow-sm hover:shadow-lg border border-white/20 dark:border-white/10 hover:border-amber-500/30 dark:hover:border-amber-400/30 flex flex-col justify-between"
           >
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center space-x-3">
@@ -210,11 +210,11 @@ export default function Home() {
           </motion.div>
 
           <motion.div
-            whileHover={{ y: -4, scale: 1.01 }}
+            whileHover={{ y: -4, scale: 1.01, transition: { type: "spring", stiffness: 400, damping: 17 } }}
             transition={{ type: "spring", stiffness: 300, damping: 20, delay: 0.6 }}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-white/60 dark:bg-zinc-900/60 backdrop-blur-xl p-6 rounded-3xl shadow-sm hover:shadow-lg border border-white/20 dark:border-white/10 hover:border-purple-500/30 dark:hover:border-purple-400/30 flex flex-col justify-between transition-all duration-300"
+            className="bg-white/60 dark:bg-zinc-900/60 backdrop-blur-xl p-6 rounded-3xl shadow-sm hover:shadow-lg border border-white/20 dark:border-white/10 hover:border-purple-500/30 dark:hover:border-purple-400/30 flex flex-col justify-between"
           >
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center space-x-3">
@@ -242,9 +242,9 @@ export default function Home() {
         {/* Monthly Summary */}
         <div className="lg:col-span-1 space-y-6">
           <motion.div 
-            whileHover={{ y: -6, scale: 1.02 }}
-            transition={{ type: "spring", stiffness: 400, damping: 17 }}
-            className="bg-zinc-900 text-white p-6 rounded-3xl shadow-xl hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.5)] dark:hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.8)] transition-all duration-300 ring-1 ring-white/10"
+            whileHover={{ y: -6, scale: 1.02, transition: { type: "spring", stiffness: 400, damping: 17 } }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            className="bg-zinc-900 text-white p-6 rounded-3xl shadow-xl hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.5)] dark:hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.8)] ring-1 ring-white/10"
           >
             <h3 className="font-medium mb-6 text-white">本月概况</h3>
             <div className="space-y-4">
@@ -267,9 +267,9 @@ export default function Home() {
 
         {/* Calendar View */}
         <motion.div 
-          whileHover={{ y: -4, scale: 1.01 }}
-          transition={{ type: "spring", stiffness: 400, damping: 17 }}
-          className="lg:col-span-2 bg-white/60 dark:bg-zinc-900/60 backdrop-blur-xl p-6 rounded-3xl shadow-sm hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] dark:hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.5)] border border-white/20 dark:border-white/10 transition-all duration-300 relative group overflow-hidden"
+          whileHover={{ y: -4, scale: 1.01, transition: { type: "spring", stiffness: 400, damping: 17 } }}
+          transition={{ type: "spring", stiffness: 300, damping: 20 }}
+          className="lg:col-span-2 bg-white/60 dark:bg-zinc-900/60 backdrop-blur-xl p-6 rounded-3xl shadow-sm hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.1)] dark:hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.5)] border border-white/20 dark:border-white/10 relative group overflow-hidden"
         >
           {/* subtle glow effect on hover */}
           <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-transparent to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
@@ -311,7 +311,8 @@ export default function Home() {
 
               return (
                 <motion.div
-                  whileHover={{ scale: 1.05 }}
+                  whileHover={{ scale: 1.05, transition: { type: "spring", stiffness: 400, damping: 17 } }}
+                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
                   key={day.toISOString()}
                   className={cn(
                     'aspect-square rounded-xl p-1 md:p-2 border flex flex-col items-center transition-colors hover:border-blue-400 dark:hover:border-blue-500 hover:shadow-md dark:hover:shadow-blue-900/20 cursor-default',
