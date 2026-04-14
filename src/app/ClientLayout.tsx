@@ -9,7 +9,6 @@ import { LayoutDashboard, Wallet, Box, CreditCard, Plus, TrendingUp, BarChart3, 
 import { RecordModal } from '@/components/RecordModal';
 import { ProfileModal } from '@/components/ProfileModal';
 import { IntroPage } from '@/components/IntroPage';
-import { WelcomePage } from '@/components/WelcomePage';
 import { cn } from '@/lib/utils';
 import { useStore } from '@/store/useStore';
 
@@ -59,10 +58,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
   }
 
   if (status === 'unauthenticated' && !isGuestMode) {
-    if (!hasSeenIntro) {
-      return <IntroPage />;
-    }
-    return <WelcomePage />;
+    return <IntroPage />;
   }
 
   return (

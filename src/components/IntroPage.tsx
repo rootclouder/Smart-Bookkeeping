@@ -1,20 +1,89 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useStore } from '@/store/useStore';
 import { useTheme } from 'next-themes';
-import { ArrowRight, BarChart3, Cloud, ShieldCheck } from 'lucide-react';
+import { ArrowRight, BarChart3, Cloud, ShieldCheck, MessageCircle, Loader2, X } from 'lucide-react';
 import { ThemeToggleBtn } from './ThemeToggleBtn';
 import { useEffect, useState } from 'react';
+import { signIn } from 'next-auth/react';
 
 export function IntroPage() {
   const setHasSeenIntro = useStore((state) => state.setHasSeenIntro);
+  const setGuestMode = useStore((state) => state.setGuestMode);
   const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+
+  // QR Code state
+  const [showQR, setShowQR] = useState(false);
+  const [qrUrl, setQrUrl] = useState('');
+  const [sceneId, setSceneId] = useState('');
+  const [authCode, setAuthCode] = useState('');
+  const [isLoadingQR, setIsLoadingQR] = useState(false);
 
   useEffect(() => setMounted(true), []);
 
   const theme = mounted ? resolvedTheme : 'dark';
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (showQR && sceneId) {
+      interval = setInterval(async () => {
+        try {
+          const res = await fetch(`/api/wechat/check?sceneId=${sceneId}&t=${Date.now()}`, {
+            cache: 'no-store'
+          });
+          const data = await res.json();
+          if (data.status === 'scanned') {
+            clearInterval(interval);
+            const signInResult = await signIn('wechat-qrcode', { 
+              sceneId, 
+              redirect: false 
+            });
+            
+            if (signInResult?.ok) {
+              setHasSeenIntro(true); // Proceed to app
+              window.location.reload();
+            } else {
+              console.error('登录失败:', signInResult?.error);
+              alert('登录失败，请重试');
+              setShowQR(false);
+            }
+          }
+        } catch (e) {
+          console.error(e);
+        }
+      }, 2000);
+    }
+    return () => clearInterval(interval);
+  }, [showQR, sceneId]);
+
+  const handleWechatLogin = async () => {
+    setIsLoadingQR(true);
+    setShowQR(true);
+    try {
+      const res = await fetch('/api/wechat/qrcode');
+      const data = await res.json();
+      if (data.url && data.code) {
+        setQrUrl(data.url);
+        setSceneId(data.sceneId);
+        setAuthCode(data.code);
+      } else {
+        alert('无法获取二维码，请检查后端配置');
+        setShowQR(false);
+      }
+    } catch (e) {
+      console.error(e);
+      setShowQR(false);
+    } finally {
+      setIsLoadingQR(false);
+    }
+  };
+
+  const handleGuestLogin = () => {
+    setHasSeenIntro(true);
+    setGuestMode(true);
+  };
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -104,19 +173,99 @@ export function IntroPage() {
         </motion.div>
 
         {/* CTA */}
-        <motion.div variants={itemVariants}>
+        <motion.div variants={itemVariants} className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <button
-            onClick={() => setHasSeenIntro(true)}
-            className="group relative px-10 py-4 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 rounded-2xl font-bold text-lg transition-all duration-300 hover:scale-105 shadow-xl hover:shadow-2xl overflow-hidden flex items-center justify-center"
+            onClick={handleWechatLogin}
+            className="group relative w-full sm:w-auto px-8 py-4 bg-[#07C160] hover:bg-[#06ad56] text-white rounded-2xl font-bold text-lg transition-all duration-300 hover:shadow-[0_0_30px_rgba(7,193,96,0.3)] hover:-translate-y-1 overflow-hidden"
           >
-            <span className="relative z-10 flex items-center">
-              开启财务探索之旅
-              <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-            </span>
+            <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
+            <div className="relative flex items-center justify-center">
+              <MessageCircle className="w-5 h-5 mr-2" />
+              微信关注登录
+            </div>
+          </button>
+
+          <button
+            onClick={handleGuestLogin}
+            className={`group w-full sm:w-auto px-8 py-4 border rounded-2xl font-bold text-lg backdrop-blur-md transition-all duration-300 hover:-translate-y-1 flex items-center justify-center ${theme === 'dark' ? 'bg-white/5 hover:bg-white/10 border-white/10 text-white' : 'bg-black/5 hover:bg-black/10 border-black/10 text-slate-900'}`}
+          >
+            在线体验
+            <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
           </button>
         </motion.div>
 
       </motion.div>
+
+      {/* QR Code Modal */}
+      <AnimatePresence>
+        {showQR && (
+          <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+              onClick={() => setShowQR(false)}
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              className="relative z-10 bg-white dark:bg-zinc-900 p-8 rounded-3xl shadow-2xl max-w-sm w-full text-center"
+            >
+              <button
+                onClick={() => setShowQR(false)}
+                className="absolute top-4 right-4 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300"
+              >
+                <X className="w-5 h-5" />
+              </button>
+              
+              <div className="w-16 h-16 bg-[#07C160]/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                <MessageCircle className="w-8 h-8 text-[#07C160]" />
+              </div>
+              
+              <h3 className="text-2xl font-bold text-zinc-900 dark:text-white mb-2">
+                扫码关注并发送验证码
+              </h3>
+              <p className="text-sm text-zinc-500 mb-6">
+                请使用微信扫描下方二维码关注公众号<br/>并在公众号内回复下方 6 位数字完成登录
+              </p>
+
+              <div className="bg-zinc-100 dark:bg-zinc-800 rounded-2xl aspect-square flex items-center justify-center overflow-hidden border border-zinc-200 dark:border-zinc-700 relative mb-6">
+                {isLoadingQR ? (
+                  <div className="flex flex-col items-center text-zinc-400">
+                    <Loader2 className="w-8 h-8 animate-spin mb-2" />
+                    <span className="text-sm">正在加载二维码...</span>
+                  </div>
+                ) : (
+                  qrUrl && (
+                    <img 
+                      src={qrUrl} 
+                      alt="微信登录二维码" 
+                      className="w-full h-full object-cover mix-blend-multiply dark:mix-blend-normal"
+                    />
+                  )
+                )}
+              </div>
+              
+              {!isLoadingQR && authCode && (
+                <div className="bg-zinc-100 dark:bg-zinc-800/50 rounded-xl p-4 border border-zinc-200 dark:border-zinc-700">
+                  <div className="text-xs text-zinc-500 mb-1">您的专属验证码</div>
+                  <div className="text-3xl font-mono font-bold tracking-[0.25em] text-[#07C160]">
+                    {authCode}
+                  </div>
+                </div>
+              )}
+              
+              <p className="text-xs text-zinc-400 mt-6 flex items-center justify-center">
+                <ShieldCheck className="w-4 h-4 mr-1" />
+                您的信息将受到严格保护
+              </p>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
     </div>
   );
 }

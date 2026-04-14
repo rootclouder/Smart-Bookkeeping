@@ -40,7 +40,7 @@ function ThemeEffectProvider({ children }: { children: React.ReactNode }) {
       setTimeout(() => {
         setIsAnimating(false);
         setAnimationType(null);
-      }, 2000);
+      }, 1000); // reduced from 2000ms
     }
   }, [resolvedTheme, prevTheme, mounted]);
 
@@ -56,8 +56,8 @@ function ThemeEffectProvider({ children }: { children: React.ReactNode }) {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            exit={{ opacity: 0, transition: { duration: 0.8, delay: 0.2 } }}
-            transition={{ duration: 0.5 }}
+            exit={{ opacity: 0, transition: { duration: 0.4, delay: 0.1 } }}
+            transition={{ duration: 0.3 }}
             className="fixed inset-0 z-[9999] pointer-events-none overflow-hidden flex flex-col justify-end items-center"
             style={{
               background: 'linear-gradient(to top, #1e1b4b, #312e81, #f59e0b, #fef3c7)'
@@ -66,7 +66,7 @@ function ThemeEffectProvider({ children }: { children: React.ReactNode }) {
             <motion.div
               initial={{ y: '100%', scale: 0.5, backgroundColor: '#f97316' }}
               animate={{ y: '-150vh', scale: 3, backgroundColor: '#fef08a' }}
-              transition={{ duration: 2, ease: "easeOut" }}
+              transition={{ duration: 1, ease: "easeOut" }}
               className="w-64 h-64 rounded-full blur-md"
             />
           </motion.div>
@@ -76,8 +76,8 @@ function ThemeEffectProvider({ children }: { children: React.ReactNode }) {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            exit={{ opacity: 0, transition: { duration: 0.8, delay: 0.2 } }}
-            transition={{ duration: 0.5 }}
+            exit={{ opacity: 0, transition: { duration: 0.4, delay: 0.1 } }}
+            transition={{ duration: 0.3 }}
             className="fixed inset-0 z-[9999] pointer-events-none overflow-hidden flex flex-col justify-start items-center"
             style={{
               background: 'linear-gradient(to bottom, #fef3c7, #f59e0b, #312e81, #1e1b4b)'
@@ -86,7 +86,7 @@ function ThemeEffectProvider({ children }: { children: React.ReactNode }) {
             <motion.div
               initial={{ y: '-50vh', scale: 2, backgroundColor: '#fef08a' }}
               animate={{ y: '120vh', scale: 0.5, backgroundColor: '#f97316' }}
-              transition={{ duration: 2, ease: "easeIn" }}
+              transition={{ duration: 1, ease: "easeIn" }}
               className="w-64 h-64 rounded-full blur-md"
             />
           </motion.div>
