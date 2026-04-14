@@ -24,7 +24,18 @@ export function WelcomePage() {
           const data = await res.json();
           if (data.status === 'scanned') {
             clearInterval(interval);
-            signIn('wechat-qrcode', { sceneId, callbackUrl: '/' });
+            const signInResult = await signIn('wechat-qrcode', { 
+              sceneId, 
+              redirect: false 
+            });
+            
+            if (signInResult?.ok) {
+              window.location.reload();
+            } else {
+              console.error('登录失败:', signInResult?.error);
+              alert('登录失败，请重试');
+              setShowQR(false);
+            }
           }
         } catch (e) {
           console.error(e);

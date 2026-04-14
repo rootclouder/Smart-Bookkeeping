@@ -43,12 +43,19 @@ export const authOptions: NextAuthOptions = {
     strategy: "jwt",
   },
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger, session }) {
       if (user) {
         token.sub = user.id;
         token.name = user.name;
         token.image = user.image;
       }
+      
+      // 捕获前端调用的 update 方法，将新数据合并到 token 中
+      if (trigger === "update" && session?.user) {
+        token.name = session.user.name;
+        token.image = session.user.image;
+      }
+      
       return token;
     },
     async session({ session, token }) {
