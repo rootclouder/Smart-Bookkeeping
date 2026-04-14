@@ -13,21 +13,11 @@ export const authOptions: NextAuthOptions = {
       clientSecret: process.env.WECHAT_APP_SECRET || "MOCK_WECHAT_APP_SECRET",
       checks: ["state"], // Explicitly set checks to include only state
       authorization: {
-        url: "https://open.weixin.qq.com/connect/oauth2/authorize",
+        url: "https://open.weixin.qq.com/connect/qrconnect",
         params: {
           appid: process.env.WECHAT_APP_ID || "MOCK_WECHAT_APP_ID",
-          scope: "snsapi_userinfo",
+          scope: "snsapi_login",
           response_type: "code",
-        },
-        async request({ provider, params }) {
-          const url = new URL(provider.authorization?.url as string);
-          url.searchParams.set("appid", provider.clientId as string);
-          url.searchParams.set("redirect_uri", params.redirect_uri as string);
-          url.searchParams.set("response_type", "code");
-          url.searchParams.set("scope", "snsapi_userinfo");
-          url.searchParams.set("state", params.state as string);
-          
-          return url.toString() + "#wechat_redirect";
         },
       },
       style: {
