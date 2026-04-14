@@ -12,6 +12,8 @@ import { IntroPage } from '@/components/IntroPage';
 import { cn } from '@/lib/utils';
 import { useStore } from '@/store/useStore';
 
+import { ThemeToggleBtn } from '@/components/ThemeToggleBtn';
+
 export function ClientLayout({ children }: { children: React.ReactNode }) {
   const [isRecordModalOpen, setIsRecordModalOpen] = useState(false);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
@@ -27,10 +29,6 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     setMounted(true);
   }, []);
-
-  const toggleTheme = () => {
-    setTheme(theme === 'dark' ? 'light' : 'dark');
-  };
 
   useEffect(() => {
     // Rehydrate state after auth resolves to prevent mismatch
@@ -69,7 +67,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
           <div className="w-8 h-8 rounded-lg bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 flex items-center justify-center mr-3">
             ¥
           </div>
-          智慧财务管理
+          个人财务可视化中心
         </div>
         <nav className="flex-1 py-4 px-3 space-y-1">
           {navItems.map((item) => {
@@ -98,13 +96,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
           <div className="mb-4 flex items-center justify-between px-2 text-zinc-500 text-sm font-medium">
             <span>主题模式</span>
             {mounted && (
-              <button 
-                onClick={toggleTheme}
-                className="p-1.5 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors"
-                title="切换黑夜/白天模式"
-              >
-                {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-              </button>
+              <ThemeToggleBtn className="scale-75" />
             )}
           </div>
           {session?.user ? (
@@ -158,15 +150,10 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
       {/* Main Content */}
       <main className="flex-1 overflow-auto relative">
         <div className="md:hidden h-16 border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between px-4 bg-white dark:bg-zinc-900 font-semibold">
-          智慧财务管理
+          个人财务可视化中心
           <div className="flex items-center space-x-3">
             {mounted && (
-              <button 
-                onClick={toggleTheme}
-                className="p-1.5 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400"
-              >
-                {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-              </button>
+              <ThemeToggleBtn className="scale-75" />
             )}
             {session?.user ? (
               <button onClick={() => signOut({ callbackUrl: '/' })}>

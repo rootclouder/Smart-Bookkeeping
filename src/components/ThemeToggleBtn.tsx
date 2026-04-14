@@ -11,8 +11,45 @@ export function ThemeToggleBtn({ className = '' }: { className?: string }) {
 
   useEffect(() => setMounted(true), []);
 
-  const toggleTheme = () => {
-    setTheme(resolvedTheme === 'light' ? 'dark' : 'light');
+  const toggleTheme = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const targetTheme = resolvedTheme === 'light' ? 'dark' : 'light';
+
+    // @ts-ignore - View Transition API
+    if (!document.startViewTransition) {
+      setTheme(targetTheme);
+      return;
+    }
+
+    const x = event.clientX;
+    const y = event.clientY;
+    const endRadius = Math.hypot(
+      Math.max(x, innerWidth - x),
+      Math.max(y, innerHeight - y)
+    );
+
+    // @ts-ignore - View Transition API
+    const transition = document.startViewTransition(() => {
+      setTheme(targetTheme);
+    });
+
+    transition.ready.then(() => {
+      const clipPath = [
+        `circle(0px at ${x}px ${y}px)`,
+        `circle(${endRadius}px at ${x}px ${y}px)`,
+      ];
+      document.documentElement.animate(
+        {
+          clipPath: targetTheme === 'dark' ? clipPath : [...clipPath].reverse(),
+        },
+        {
+          duration: 500,
+          easing: 'ease-in-out',
+          pseudoElement: targetTheme === 'dark' 
+            ? '::view-transition-new(root)' 
+            : '::view-transition-old(root)',
+        }
+      );
+    });
   };
 
   if (!mounted) return <div className={`w-12 h-12 ${className}`} />;

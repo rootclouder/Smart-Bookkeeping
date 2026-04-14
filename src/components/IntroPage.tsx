@@ -102,7 +102,7 @@ export function IntroPage() {
   };
 
   return (
-    <div className={`min-h-screen relative overflow-hidden flex flex-col justify-center items-center font-sans transition-colors duration-1000 ${theme === 'dark' ? 'bg-[#050505] text-white' : 'bg-slate-50 text-slate-900'}`}>
+    <div className={`min-h-screen relative overflow-hidden flex flex-col justify-center items-center font-sans ${theme === 'dark' ? 'bg-[#050505] text-white' : 'bg-slate-50 text-slate-900'}`}>
       
       {/* Background Decorative Effects */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
