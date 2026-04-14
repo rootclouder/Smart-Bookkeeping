@@ -20,7 +20,9 @@ export function WelcomePage() {
     if (showQR && sceneId) {
       interval = setInterval(async () => {
         try {
-          const res = await fetch(`/api/wechat/check?sceneId=${sceneId}`);
+          const res = await fetch(`/api/wechat/check?sceneId=${sceneId}&t=${Date.now()}`, {
+            cache: 'no-store'
+          });
           const data = await res.json();
           if (data.status === 'scanned') {
             clearInterval(interval);
