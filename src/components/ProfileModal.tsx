@@ -36,15 +36,44 @@ export function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
       return;
     }
 
-    if (file.size > 2 * 1024 * 1024) {
-      setError('图片大小不能超过 2MB');
-      return;
-    }
-
     const reader = new FileReader();
     reader.onloadend = () => {
-      setImage(reader.result as string);
-      setError('');
+      // Create an image element to draw onto canvas for compression
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const MAX_SIZE = 400; // max width/height for avatar
+        let width = img.width;
+        let height = img.height;
+
+        // Resize proportionally
+        if (width > height && width > MAX_SIZE) {
+          height *= MAX_SIZE / width;
+          width = MAX_SIZE;
+        } else if (height > MAX_SIZE) {
+          width *= MAX_SIZE / height;
+          height = MAX_SIZE;
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+          ctx.drawImage(img, 0, 0, width, height);
+          // Compress to WebP or JPEG with 0.8 quality to drastically reduce size
+          const compressedBase64 = canvas.toDataURL('image/webp', 0.8);
+          setImage(compressedBase64);
+          setError('');
+        } else {
+          setImage(reader.result as string);
+          setError('');
+        }
+      };
+      img.onerror = () => {
+        setError('图片加载失败');
+      };
+      img.src = reader.result as string;
     };
     reader.readAsDataURL(file);
   };
@@ -67,14 +96,10 @@ export function ProfileModal({ isOpen, onClose }: ProfileModalProps) {
         throw new Error(data.error || 'Failed to update profile');
       }
 
-      // 触发 NextAuth 重新拉取 session，更新页面状态
+      // Update next-auth session locally without triggering a page reload
       await update({
-        ...session,
-        user: {
-          ...session?.user,
-          name: data.user.name,
-          image: data.user.image,
-        }
+        name: data.user.name,
+        image: data.user.image,
       });
       
       onClose();

@@ -47,7 +47,9 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
     { to: '/debts', icon: CreditCard, label: '负债管理' },
   ];
 
-  if (status === 'loading') {
+  // Only show full screen loading when initially fetching session (session is undefined)
+  // When updating session via useSession().update(), session exists so we shouldn't unmount the app
+  if (status === 'loading' && session === undefined) {
     return (
       <div className="flex h-screen items-center justify-center bg-zinc-50 dark:bg-zinc-950">
         <div className="w-8 h-8 rounded-full border-4 border-zinc-200 dark:border-zinc-800 border-t-zinc-900 dark:border-t-zinc-100 animate-spin"></div>
