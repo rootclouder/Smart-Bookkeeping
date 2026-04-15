@@ -26,8 +26,13 @@ export const authOptions: NextAuthOptions = {
         }
 
         // 查找用户
-        const account = await prisma.account.findFirst({
-          where: { provider: "wechat-mp", providerAccountId: session.openid },
+        const account = await prisma.account.findUnique({
+          where: { 
+            provider_providerAccountId: {
+              provider: "wechat-mp", 
+              providerAccountId: session.openid 
+            }
+          },
           include: { user: true },
         });
 
@@ -52,8 +57,8 @@ export const authOptions: NextAuthOptions = {
       
       // 捕获前端调用的 update 方法，将新数据合并到 token 中
       if (trigger === "update" && session?.user) {
-        token.name = session.user.name;
-        token.image = session.user.image;
+        if (session.user.name !== undefined) token.name = session.user.name;
+        if (session.user.image !== undefined) token.image = session.user.image;
       }
       
       return token;

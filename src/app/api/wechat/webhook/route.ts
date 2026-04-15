@@ -46,12 +46,14 @@ export async function POST(req: NextRequest) {
       }
 
       if (sceneId) {
+        // MUST ensure user exists BEFORE updating session to scanned
+        await ensureUserExists(FromUserName);
+
         await prisma.wechatLoginSession.updateMany({
           where: { sceneId },
           data: { status: 'scanned', openid: FromUserName },
         });
 
-        await ensureUserExists(FromUserName);
         replyContent = '登录成功！您可以返回网页继续操作。您也可以直接发送“餐饮 50”格式的消息来记账。';
       } else if (Event === 'subscribe') {
         replyContent = '欢迎关注智慧财务管理！请回复网页上显示的 6 位验证码进行登录，或直接回复如“餐饮 50”来记账。';
@@ -160,15 +162,6 @@ export async function POST(req: NextRequest) {
 }
 
 async function ensureUserExists(openid: string) {
-  // 先尝试通过 openid 查找用户
-  const account = await prisma.account.findFirst({
-    where: { provider: 'wechat-mp', providerAccountId: openid },
-    include: { user: true }
-  });
-
-  if (account) return account.user;
-
-  // 如果不存在，尝试从微信拉取用户信息并创建
   let nickname = '微信用户';
   let headimgurl = '';
   
@@ -184,21 +177,38 @@ async function ensureUserExists(openid: string) {
     console.warn('Failed to fetch user info', err);
   }
 
-  const user = await prisma.user.create({
-    data: {
-      name: nickname,
-      image: headimgurl,
-      accounts: {
-        create: {
-          type: 'oauth',
-          provider: 'wechat-mp',
-          providerAccountId: openid,
+  // Use upsert to avoid race conditions when multiple webhooks arrive simultaneously
+  // Also updates the user's nickname and avatar if they have changed
+  const account = await prisma.account.upsert({
+    where: {
+      provider_providerAccountId: {
+        provider: 'wechat-mp',
+        providerAccountId: openid,
+      }
+    },
+    update: {
+      user: {
+        update: {
+          name: nickname,
+          image: headimgurl,
         }
       }
-    }
+    },
+    create: {
+      type: 'oauth',
+      provider: 'wechat-mp',
+      providerAccountId: openid,
+      user: {
+        create: {
+          name: nickname,
+          image: headimgurl,
+        }
+      }
+    },
+    include: { user: true }
   });
 
-  return user;
+  return account.user;
 }
 
 function parseBookkeepingMessage(text: string) {
