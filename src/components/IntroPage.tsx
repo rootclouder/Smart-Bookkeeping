@@ -43,7 +43,10 @@ export function IntroPage() {
             
             if (signInResult?.ok) {
               setHasSeenIntro(true); // Proceed to app
-              window.location.reload();
+              // Delay reload slightly to ensure cookie is fully set and React state flushes
+              setTimeout(() => {
+                window.location.reload();
+              }, 100);
             } else {
               console.error('登录失败:', signInResult?.error);
               alert('登录失败，请重试');

@@ -74,13 +74,16 @@ export async function POST(req: NextRequest) {
         });
 
         if (session) {
-          // 标记为已扫码，记录 openid
+          // 1. MUST ensure user and account exist BEFORE marking session as scanned!
+          // Otherwise frontend check will race and fail NextAuth authorize
+          await ensureUserExists(FromUserName);
+
+          // 2. Mark as scanned to release the frontend polling
           await prisma.wechatLoginSession.update({
             where: { id: session.id },
             data: { status: 'scanned', openid: FromUserName },
           });
 
-          await ensureUserExists(FromUserName);
           replyContent = '登录成功！网页端即将自动跳转。后续可直接在此发送如“餐饮 50”进行记账。';
         } else {
           replyContent = '验证码错误或已过期，请在网页端刷新二维码后重试。';
