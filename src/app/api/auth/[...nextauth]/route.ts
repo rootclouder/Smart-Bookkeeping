@@ -56,9 +56,14 @@ export const authOptions: NextAuthOptions = {
       }
       
       // 捕获前端调用的 update 方法，将新数据合并到 token 中
-      if (trigger === "update" && session?.user) {
-        if (session.user.name !== undefined) token.name = session.user.name;
-        if (session.user.image !== undefined) token.image = session.user.image;
+      if (trigger === "update" && session) {
+        // Support flat object from update({ name, image })
+        if (session.name !== undefined) token.name = session.name;
+        if (session.image !== undefined) token.image = session.image;
+        
+        // Support nested object from update({ user: { name, image } })
+        if (session.user?.name !== undefined) token.name = session.user.name;
+        if (session.user?.image !== undefined) token.image = session.user.image;
       }
       
       return token;
