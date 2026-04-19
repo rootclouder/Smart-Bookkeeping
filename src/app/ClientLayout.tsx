@@ -31,6 +31,29 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
   }, []);
 
   useEffect(() => {
+    // Intercept fetch to detect 494 Request Header Too Large error globally
+    const originalFetch = window.fetch;
+    let hasAlerted494 = false;
+
+    window.fetch = async (...args) => {
+      try {
+        const response = await originalFetch(...args);
+        if (response.status === 494 && !hasAlerted494) {
+          hasAlerted494 = true;
+          alert('检测到您的本地缓存数据（Cookie）过大，导致请求被服务器拒绝（494错误）。\\n\\n请打开浏览器的设置或开发者工具，手动清除本站的所有 Cookie 后刷新重试。');
+        }
+        return response;
+      } catch (error) {
+        throw error;
+      }
+    };
+
+    return () => {
+      window.fetch = originalFetch;
+    };
+  }, []);
+
+  useEffect(() => {
     // Rehydrate state after auth resolves to prevent mismatch
     if (status !== 'loading') {
       useStore.persist.rehydrate();
