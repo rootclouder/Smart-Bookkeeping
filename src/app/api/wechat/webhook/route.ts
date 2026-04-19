@@ -178,7 +178,8 @@ async function ensureUserExists(openid: string) {
   }
 
   // Use upsert to avoid race conditions when multiple webhooks arrive simultaneously
-  // Also updates the user's nickname and avatar if they have changed
+  // Do NOT update the user's nickname and avatar if the account already exists,
+  // to avoid overwriting their custom profile data with WeChat's default "微信用户".
   const account = await prisma.account.upsert({
     where: {
       provider_providerAccountId: {
@@ -186,14 +187,7 @@ async function ensureUserExists(openid: string) {
         providerAccountId: openid,
       }
     },
-    update: {
-      user: {
-        update: {
-          name: nickname,
-          image: headimgurl,
-        }
-      }
-    },
+    update: {}, // Leave empty so we don't overwrite existing user data
     create: {
       type: 'oauth',
       provider: 'wechat-mp',
