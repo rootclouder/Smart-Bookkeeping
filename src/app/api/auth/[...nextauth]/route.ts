@@ -52,18 +52,17 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         token.sub = user.id;
         token.name = user.name;
-        token.image = user.image;
+        // Do NOT store image in JWT token to prevent 494 Request Header Too Large error
+        // when the image is a large base64 string.
       }
       
       // 捕获前端调用的 update 方法，将新数据合并到 token 中
       if (trigger === "update" && session) {
-        // Support flat object from update({ name, image })
+        // Support flat object from update({ name })
         if (session.name !== undefined) token.name = session.name;
-        if (session.image !== undefined) token.image = session.image;
         
-        // Support nested object from update({ user: { name, image } })
+        // Support nested object from update({ user: { name } })
         if (session.user?.name !== undefined) token.name = session.user.name;
-        if (session.user?.image !== undefined) token.image = session.user.image;
       }
       
       return token;
@@ -73,7 +72,21 @@ export const authOptions: NextAuthOptions = {
         // @ts-ignore
         session.user.id = token.sub;
         session.user.name = token.name as string | null | undefined;
-        session.user.image = token.image as string | null | undefined;
+        
+        // Fetch the user's image directly from the database to keep the cookie size small
+        if (token.sub) {
+          try {
+            const dbUser = await prisma.user.findUnique({
+              where: { id: token.sub as string },
+              select: { image: true }
+            });
+            if (dbUser) {
+              session.user.image = dbUser.image as string | null | undefined;
+            }
+          } catch (e) {
+            console.error("Error fetching user image for session:", e);
+          }
+        }
       }
       return session;
     },
