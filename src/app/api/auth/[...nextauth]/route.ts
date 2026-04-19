@@ -49,6 +49,12 @@ export const authOptions: NextAuthOptions = {
   },
   callbacks: {
     async jwt({ token, user, trigger, session }) {
+      // ALWAYS remove the default picture/image fields that NextAuth automatically
+      // injects from the user object. This is CRITICAL to prevent 494 errors
+      // when the user has a large base64 image saved in the database.
+      if (token.picture) delete token.picture;
+      if (token.image) delete token.image;
+
       if (user) {
         token.sub = user.id;
         token.name = user.name;
