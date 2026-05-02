@@ -1,9 +1,9 @@
 'use client';
 
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useStore } from '@/store/useStore';
 import { useTheme } from 'next-themes';
-import { ArrowRight, BarChart3, Cloud, ShieldCheck, MessageCircle, Loader2, X } from 'lucide-react';
+import { ArrowRight, BarChart3, Cloud, Loader2, ShieldCheck } from 'lucide-react';
 import { ThemeToggleBtn } from './ThemeToggleBtn';
 import { useEffect, useState } from 'react';
 import { signIn } from 'next-auth/react';
@@ -14,72 +14,61 @@ export function IntroPage() {
   const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
-  // QR Code state
-  const [showQR, setShowQR] = useState(false);
-  const [qrUrl, setQrUrl] = useState('');
-  const [sceneId, setSceneId] = useState('');
-  const [authCode, setAuthCode] = useState('');
-  const [isLoadingQR, setIsLoadingQR] = useState(false);
+  const [mode, setMode] = useState<'login' | 'register'>('login');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [displayName, setDisplayName] = useState('');
+  const [error, setError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => setMounted(true), []);
 
   const theme = mounted ? resolvedTheme : 'dark';
 
-  useEffect(() => {
-    let interval: NodeJS.Timeout;
-    if (showQR && sceneId) {
-      interval = setInterval(async () => {
-        try {
-          const res = await fetch(`/api/wechat/check?sceneId=${sceneId}&t=${Date.now()}`, {
-            cache: 'no-store'
-          });
-          const data = await res.json();
-          if (data.status === 'scanned') {
-            clearInterval(interval);
-            const signInResult = await signIn('wechat-qrcode', { 
-              sceneId, 
-              redirect: false 
-            });
-            
-            if (signInResult?.ok) {
-              setHasSeenIntro(true); // Proceed to app
-              // Delay reload slightly to ensure cookie is fully set and React state flushes
-              setTimeout(() => {
-                window.location.reload();
-              }, 100);
-            } else {
-              console.error('登录失败:', signInResult?.error);
-              alert('登录失败，请重试');
-              setShowQR(false);
-            }
-          }
-        } catch (e) {
-          console.error(e);
-        }
-      }, 2000);
-    }
-    return () => clearInterval(interval);
-  }, [showQR, sceneId]);
-
-  const handleWechatLogin = async () => {
-    setIsLoadingQR(true);
-    setShowQR(true);
+  const handleLogin = async () => {
+    setError('');
+    setIsSubmitting(true);
     try {
-      const res = await fetch('/api/wechat/qrcode');
-      const data = await res.json();
-      if (data.url && data.code) {
-        setQrUrl(data.url);
-        setSceneId(data.sceneId);
-        setAuthCode(data.code);
-      } else {
-        alert('无法获取二维码，请检查后端配置');
-        setShowQR(false);
+      const result = await signIn('credentials', { username, password, redirect: false });
+      if (result?.ok) {
+        setGuestMode(false);
+        setHasSeenIntro(true);
+        return;
       }
-    } catch (e) {
-      console.error(e);
-      setShowQR(false);
+      setError(result?.error || '登录失败');
     } finally {
-      setIsLoadingQR(false);
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleRegister = async () => {
+    setError('');
+    if (password !== confirmPassword) {
+      setError('两次输入的密码不一致');
+      return;
+    }
+    setIsSubmitting(true);
+    try {
+      const res = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password, name: displayName }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data?.error || '注册失败');
+        return;
+      }
+      const result = await signIn('credentials', { username, password, redirect: false });
+      if (result?.ok) {
+        setGuestMode(false);
+        setHasSeenIntro(true);
+        return;
+      }
+      setError(result?.error || '登录失败');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -106,8 +95,6 @@ export function IntroPage() {
 
   return (
     <div className={`min-h-screen relative overflow-hidden flex flex-col justify-center items-center font-sans ${theme === 'dark' ? 'bg-[#050505] text-white' : 'bg-slate-50 text-slate-900'}`}>
-      
-      {/* Background Decorative Effects */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         {theme === 'dark' ? (
           <>
@@ -122,153 +109,132 @@ export function IntroPage() {
         )}
       </div>
 
-      {/* Top Header / Actions */}
-      <div className="absolute top-0 right-0 p-6 z-50">
-        <ThemeToggleBtn />
-      </div>
-
-      {/* Main Content */}
-      <motion.div 
-        className="relative z-10 w-full max-w-4xl px-6 flex flex-col items-center text-center"
+      <motion.div
+        className="relative z-10 w-full max-w-md px-6"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
       >
-        <motion.div variants={itemVariants} className={`inline-flex items-center space-x-2 border rounded-full px-4 py-1.5 mb-8 backdrop-blur-md ${theme === 'dark' ? 'bg-white/5 border-white/10' : 'bg-black/5 border-black/10'}`}>
-          <span className="flex h-2 w-2 rounded-full bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.8)]"></span>
-          <span className={`text-xs font-medium tracking-wide ${theme === 'dark' ? 'text-zinc-300' : 'text-slate-600'}`}>
-            新一代智慧财务中心
-          </span>
-        </motion.div>
-        
-        <motion.h1 
-          variants={itemVariants}
-          className="text-5xl sm:text-6xl md:text-7xl font-extrabold tracking-tight mb-6 leading-tight"
-        >
-          智慧财务中心<br />
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-sky-500 to-cyan-500 dark:from-blue-400 dark:via-sky-400 dark:to-cyan-300">
-            每一分财富流向
-          </span>
-        </motion.h1>
-        
-        <motion.p 
-          variants={itemVariants}
-          className={`text-lg sm:text-xl mb-12 max-w-2xl font-light leading-relaxed ${theme === 'dark' ? 'text-zinc-400' : 'text-slate-600'}`}
-        >
-          极简设计与强大分析的完美结合。在这里，记账不再繁琐，而是重塑财富轨迹的开始。
-        </motion.p>
-        
-        {/* Features */}
-        <motion.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-3xl mb-12">
-          {[
-            { icon: BarChart3, title: '多维度可视化', desc: '收支图表、资产分布一目了然' },
-            { icon: Cloud, title: '云端同步', desc: '多设备实时更新，数据永不丢失' },
-            { icon: ShieldCheck, title: '隐私安全', desc: '本地+云端双重加密保护' }
-          ].map((feature, i) => (
-            <div key={i} className={`p-6 rounded-2xl flex flex-col items-center border backdrop-blur-sm ${theme === 'dark' ? 'bg-white/5 border-white/10' : 'bg-white/50 border-black/5 shadow-sm'}`}>
-              <div className={`p-3 rounded-xl mb-4 ${theme === 'dark' ? 'bg-zinc-800 text-blue-400' : 'bg-blue-50 text-blue-600'}`}>
-                <feature.icon className="w-6 h-6" />
-              </div>
-              <h3 className="font-semibold text-lg mb-2">{feature.title}</h3>
-              <p className={`text-sm text-center ${theme === 'dark' ? 'text-zinc-500' : 'text-slate-500'}`}>{feature.desc}</p>
+        <motion.div variants={itemVariants} className="flex items-center justify-between mb-10">
+          <div className="flex items-center space-x-3">
+            <img src="/icon.svg" alt="Logo" className="w-10 h-10 rounded-2xl shadow-sm" />
+            <div>
+              <div className="text-lg font-semibold tracking-tight">智慧财务中心</div>
+              <div className="text-xs text-zinc-500 dark:text-zinc-400">账号数据与游客数据隔离</div>
             </div>
-          ))}
-        </motion.div>
-
-        {/* CTA */}
-        <motion.div variants={itemVariants} className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <button
-            onClick={handleWechatLogin}
-            className="group relative w-full sm:w-auto px-8 py-4 bg-[#07C160] hover:bg-[#06ad56] text-white rounded-2xl font-bold text-lg transition-all duration-300 hover:shadow-[0_0_30px_rgba(7,193,96,0.3)] hover:-translate-y-1 overflow-hidden"
-          >
-            <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
-            <div className="relative flex items-center justify-center">
-              <MessageCircle className="w-5 h-5 mr-2" />
-              微信关注登录
-            </div>
-          </button>
-
-          <button
-            onClick={handleGuestLogin}
-            className={`group w-full sm:w-auto px-8 py-4 border rounded-2xl font-bold text-lg backdrop-blur-md transition-all duration-300 hover:-translate-y-1 flex items-center justify-center ${theme === 'dark' ? 'bg-white/5 hover:bg-white/10 border-white/10 text-white' : 'bg-black/5 hover:bg-black/10 border-black/10 text-slate-900'}`}
-          >
-            在线体验
-            <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-          </button>
-        </motion.div>
-
-      </motion.div>
-
-      {/* QR Code Modal */}
-      <AnimatePresence>
-        {showQR && (
-          <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="absolute inset-0 bg-black/60 backdrop-blur-sm"
-              onClick={() => setShowQR(false)}
-            />
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              className="relative z-10 bg-white/70 dark:bg-zinc-900/70 backdrop-blur-2xl p-8 rounded-3xl shadow-2xl max-w-sm w-full text-center border border-white/20 dark:border-white/10"
-            >
-              <button
-                onClick={() => setShowQR(false)}
-                className="absolute top-4 right-4 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300"
-              >
-                <X className="w-5 h-5" />
-              </button>
-              
-              <div className="w-16 h-16 bg-[#07C160]/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                <MessageCircle className="w-8 h-8 text-[#07C160]" />
-              </div>
-              
-              <h3 className="text-2xl font-bold text-zinc-900 dark:text-white mb-2">
-                扫码关注并发送验证码
-              </h3>
-              <p className="text-sm text-zinc-500 mb-6">
-                请使用微信扫描下方二维码关注公众号<br/>并在公众号内回复下方 6 位数字完成登录
-              </p>
-
-              <div className="bg-zinc-100 dark:bg-zinc-800 rounded-2xl aspect-square flex items-center justify-center overflow-hidden border border-zinc-200 dark:border-zinc-700 relative mb-6">
-                {isLoadingQR ? (
-                  <div className="flex flex-col items-center text-zinc-400">
-                    <Loader2 className="w-8 h-8 animate-spin mb-2" />
-                    <span className="text-sm">正在加载二维码...</span>
-                  </div>
-                ) : (
-                  qrUrl && (
-                    <img 
-                      src={qrUrl} 
-                      alt="微信登录二维码" 
-                      className="w-full h-full object-cover mix-blend-multiply dark:mix-blend-normal"
-                    />
-                  )
-                )}
-              </div>
-              
-              {!isLoadingQR && authCode && (
-                <div className="bg-zinc-100 dark:bg-zinc-800/50 rounded-xl p-4 border border-zinc-200 dark:border-zinc-700">
-                  <div className="text-xs text-zinc-500 mb-1">您的专属验证码</div>
-                  <div className="text-3xl font-mono font-bold tracking-[0.25em] text-[#07C160]">
-                    {authCode}
-                  </div>
-                </div>
-              )}
-              
-              <p className="text-xs text-zinc-400 mt-6 flex items-center justify-center">
-                <ShieldCheck className="w-4 h-4 mr-1" />
-                您的信息将受到严格保护
-              </p>
-            </motion.div>
           </div>
-        )}
-      </AnimatePresence>
+          <ThemeToggleBtn className="scale-90" />
+        </motion.div>
 
+        <motion.div variants={itemVariants} className="bg-white/70 dark:bg-zinc-900/70 backdrop-blur-2xl border-white/30 dark:border-white/10 rounded-3xl shadow-2xl border p-6 md:p-7">
+          <div className="flex items-center justify-between mb-5">
+            <div className="flex space-x-2">
+              <button
+                type="button"
+                onClick={() => { setMode('login'); setError(''); }}
+                className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors ${mode === 'login' ? 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-900' : 'bg-white/60 dark:bg-zinc-800/60 text-zinc-600 dark:text-zinc-300 border border-white/20 dark:border-white/10'}`}
+              >
+                登录
+              </button>
+              <button
+                type="button"
+                onClick={() => { setMode('register'); setError(''); }}
+                className={`px-4 py-2 rounded-xl text-sm font-medium transition-colors ${mode === 'register' ? 'bg-zinc-900 text-white dark:bg-white dark:text-zinc-900' : 'bg-white/60 dark:bg-zinc-800/60 text-zinc-600 dark:text-zinc-300 border border-white/20 dark:border-white/10'}`}
+              >
+                注册
+              </button>
+            </div>
+            <button
+              type="button"
+              onClick={handleGuestLogin}
+              className="text-xs px-3 py-2 rounded-xl bg-white/60 dark:bg-zinc-800/60 text-zinc-600 dark:text-zinc-300 border border-white/20 dark:border-white/10 hover:bg-white dark:hover:bg-zinc-800 transition-colors"
+            >
+              游客体验
+            </button>
+          </div>
+
+          <div className="space-y-3">
+            <div>
+              <div className="text-xs text-zinc-500 mb-1">用户名</div>
+              <input
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                className="w-full px-3 py-2.5 bg-white/50 dark:bg-zinc-800/50 backdrop-blur-md border border-zinc-200 dark:border-zinc-700 rounded-xl text-sm outline-none focus:ring-2 focus:ring-zinc-900 dark:focus:ring-zinc-100 transition-all"
+                placeholder="请输入用户名"
+                autoComplete="username"
+              />
+            </div>
+
+            {mode === 'register' && (
+              <div>
+                <div className="text-xs text-zinc-500 mb-1">显示名称（可选）</div>
+                <input
+                  value={displayName}
+                  onChange={(e) => setDisplayName(e.target.value)}
+                  className="w-full px-3 py-2.5 bg-white/50 dark:bg-zinc-800/50 backdrop-blur-md border border-zinc-200 dark:border-zinc-700 rounded-xl text-sm outline-none focus:ring-2 focus:ring-zinc-900 dark:focus:ring-zinc-100 transition-all"
+                  placeholder="用于页面展示"
+                  autoComplete="name"
+                />
+              </div>
+            )}
+
+            <div>
+              <div className="text-xs text-zinc-500 mb-1">密码</div>
+              <input
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-3 py-2.5 bg-white/50 dark:bg-zinc-800/50 backdrop-blur-md border border-zinc-200 dark:border-zinc-700 rounded-xl text-sm outline-none focus:ring-2 focus:ring-zinc-900 dark:focus:ring-zinc-100 transition-all"
+                placeholder="请输入密码"
+                type="password"
+                autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
+              />
+            </div>
+
+            {mode === 'register' && (
+              <div>
+                <div className="text-xs text-zinc-500 mb-1">确认密码</div>
+                <input
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  className="w-full px-3 py-2.5 bg-white/50 dark:bg-zinc-800/50 backdrop-blur-md border border-zinc-200 dark:border-zinc-700 rounded-xl text-sm outline-none focus:ring-2 focus:ring-zinc-900 dark:focus:ring-zinc-100 transition-all"
+                  placeholder="再次输入密码"
+                  type="password"
+                  autoComplete="new-password"
+                />
+              </div>
+            )}
+
+            {error && (
+              <div className="text-xs text-rose-500 pt-1">{error}</div>
+            )}
+
+            <button
+              type="button"
+              disabled={isSubmitting}
+              onClick={mode === 'login' ? handleLogin : handleRegister}
+              className="w-full mt-2 px-4 py-3 rounded-2xl bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 font-semibold text-sm shadow-lg hover:shadow-xl transition-all disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center"
+            >
+              {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <span className="flex items-center">继续 <ArrowRight className="w-4 h-4 ml-2" /></span>}
+            </button>
+
+            <div className="flex items-center justify-center text-xs text-zinc-400 pt-3">
+              <ShieldCheck className="w-4 h-4 mr-1" />
+              密码仅用于本系统登录
+            </div>
+          </div>
+        </motion.div>
+
+        <motion.div variants={itemVariants} className="mt-6 grid grid-cols-2 gap-3 text-xs text-zinc-500">
+          <div className="bg-white/50 dark:bg-zinc-900/50 backdrop-blur-xl border border-white/20 dark:border-white/10 rounded-2xl p-4 flex items-center space-x-3">
+            <Cloud className="w-4 h-4 text-blue-500" />
+            <div>登录后数据云端同步</div>
+          </div>
+          <div className="bg-white/50 dark:bg-zinc-900/50 backdrop-blur-xl border border-white/20 dark:border-white/10 rounded-2xl p-4 flex items-center space-x-3">
+            <BarChart3 className="w-4 h-4 text-emerald-500" />
+            <div>总览与分析实时更新</div>
+          </div>
+        </motion.div>
+      </motion.div>
     </div>
   );
 }

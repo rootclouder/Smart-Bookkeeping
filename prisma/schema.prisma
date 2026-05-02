@@ -46,9 +46,11 @@ model Session {
 model User {
   id            String    @id @default(cuid())
   name          String?
+  username      String?   @unique
   email         String?   @unique
   emailVerified DateTime?
   image         String?
+  passwordHash  String?
   accounts      Account[]
   sessions      Session[]
   appState      AppStateSync?
@@ -60,15 +62,4 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
-}
-
-model WechatLoginSession {
-  id        String   @id @default(cuid())
-  sceneId   String   @unique
-  code      String?  // 6位数验证码，用于订阅号登录
-  ticket    String?
-  status    String   @default("pending") // pending, scanned, expired
-  openid    String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 }
